@@ -6,12 +6,6 @@ import 'package:orderly_worker_web/models/delivery_order.dart';
 import 'package:orderly_worker_web/models/staff_member.dart';
 import 'package:orderly_worker_web/services/worker_web_service.dart';
 
-const String _workerPortal = '\u{0628}\u{0648}\u{0627}\u{0628}\u{0629} \u{0627}\u{0644}\u{0639}\u{0627}\u{0645}\u{0644}';
-const String _workerOnly = '\u{062f}\u{062e}\u{0648}\u{0644} \u{0648}\u{0625}\u{062f}\u{0627}\u{0631}\u{0629} \u{0637}\u{0644}\u{0628}\u{0627}\u{062a}\u{0643} \u{0641}\u{0642}\u{0637}';
-const String _username = '\u{0627}\u{0633}\u{0645} \u{0627}\u{0644}\u{0645}\u{0633}\u{062a}\u{062e}\u{062f}\u{0645}';
-const String _secret = '\u{0643}\u{0644}\u{0645}\u{0629} \u{0627}\u{0644}\u{0645}\u{0631}\u{0648}\u{0631} \u{0623}\u{0648} PIN';
-const String _loginLabel = '\u{062f}\u{062e}\u{0648}\u{0644} \u{0627}\u{0644}\u{0639}\u{0627}\u{0645}\u{0644}';
-
 class WorkerWebScreen extends StatefulWidget {
   const WorkerWebScreen({super.key, required this.databaseUrl});
   final String databaseUrl;
@@ -29,6 +23,7 @@ class _WorkerWebScreenState extends State<WorkerWebScreen> {
   Timer? _timer;
   String? _error;
   bool _busy = false;
+  bool _showLogin = false;
 
   @override
   void dispose() {
@@ -42,11 +37,11 @@ class _WorkerWebScreenState extends State<WorkerWebScreen> {
   Future<void> _login() async {
     final String rid = _restaurant.text.trim();
     if (rid.length < 4 || !RegExp(r'^[a-zA-Z0-9]+$').hasMatch(rid)) {
-      setState(() => _error = 'Restaurant ID must contain at least 4 letters or numbers.');
+      setState(() => _error = 'أدخل معرف المطعم بشكل صحيح، لا يقل عن 4 أحرف أو أرقام.');
       return;
     }
     if (widget.databaseUrl.trim().isEmpty || widget.databaseUrl.contains('YOUR_DATABASE')) {
-      setState(() => _error = 'Firebase URL is not configured for this web app.');
+      setState(() => _error = 'توجد مشكلة في إعداد قاعدة البيانات، يرجى مراجعة إعدادات التطبيق.');
       return;
     }
     setState(() { _busy = true; _error = null; });
@@ -80,31 +75,331 @@ class _WorkerWebScreenState extends State<WorkerWebScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff4f7f5),
-      body: SafeArea(child: _staff == null ? _loginView() : _homeView()),
+      backgroundColor: const Color(0xff0b1014),
+      body: SafeArea(child: _staff == null ? _landingView() : _homeView()),
     );
   }
 
-  Widget _loginView() {
-    return Center(child: SingleChildScrollView(padding: const EdgeInsets.all(24), child: ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 440),
-      child: Card(elevation: 0, child: Padding(padding: const EdgeInsets.all(26), child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-        const Icon(Icons.delivery_dining, size: 56, color: Color(0xff13795b)),
-        const SizedBox(height: 12),
-        const Text(_workerPortal, textAlign: TextAlign.center, style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 7),
-        const Text(_workerOnly, textAlign: TextAlign.center, style: TextStyle(color: Colors.black54)),
-        const SizedBox(height: 26),
-        TextField(controller: _restaurant, textDirection: TextDirection.ltr, decoration: const InputDecoration(labelText: 'Restaurant ID', prefixIcon: Icon(Icons.storefront_outlined))),
-        const SizedBox(height: 12),
-        TextField(controller: _user, decoration: const InputDecoration(labelText: _username, prefixIcon: Icon(Icons.person_outline))),
-        const SizedBox(height: 12),
-        TextField(controller: _secretController, obscureText: true, decoration: const InputDecoration(labelText: _secret, prefixIcon: Icon(Icons.lock_outline))),
-        if (_error != null) ...<Widget>[const SizedBox(height: 14), Text(_error!, textAlign: TextAlign.center, style: TextStyle(color: Colors.red))],
-        const SizedBox(height: 20),
-        FilledButton.icon(onPressed: _busy ? null : _login, icon: const Icon(Icons.login), label: Text(_busy ? 'Checking...' : _loginLabel)),
-      ]))),
-    )));
+  Widget _landingView() {
+    return Stack(
+      children: <Widget>[
+        Positioned.fill(
+          child: DecoratedBox(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: <Color>[
+                  Color(0xFF04070B),
+                  Color(0xFF0B121A),
+                  Color(0xFF0E171E),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Positioned.fill(
+          child: IgnorePointer(
+            child: CustomPaint(
+              painter: _ParticleBackgroundPainter(),
+            ),
+          ),
+        ),
+        Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 440),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: 94,
+                    height: 94,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFF0F1E14),
+                      border: Border.all(color: const Color(0xFF2AD39F), width: 2.5),
+                      boxShadow: const <BoxShadow>[
+                        BoxShadow(
+                          color: Color(0xFF2AD39F),
+                          blurRadius: 26,
+                          spreadRadius: 4,
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.storefront_rounded,
+                      size: 42,
+                      color: Color(0xFF82F0C3),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Orderly',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF15252A),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(color: const Color(0xFF2F4D52), width: 1),
+                    ),
+                    child: const Text(
+                      'نظام إدارة التوصيل الذكي',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFFA9D9D0),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  GestureDetector(
+                    onTap: () => setState(() => _showLogin = true),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 180),
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28),
+                        gradient: const LinearGradient(
+                          colors: <Color>[
+                            Color(0xFF6F5DEB),
+                            Color(0xFF4B7BFF),
+                          ],
+                        ),
+                        boxShadow: const <BoxShadow>[
+                          BoxShadow(
+                            color: Color(0x664b7bff),
+                            blurRadius: 22,
+                            offset: Offset(0, 14),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            width: 52,
+                            height: 52,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.18),
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            child: const Icon(
+                              Icons.arrow_forward_rounded,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              child: const Text(
+                                'تسجيل دخول السائقين أو العمال',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 52,
+                            height: 52,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.18),
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            child: const Icon(
+                              Icons.directions_car_filled_rounded,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  if (_showLogin) ...<Widget>[
+                    const SizedBox(height: 28),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(22),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF101A22),
+                        borderRadius: BorderRadius.circular(28),
+                        border: Border.all(color: const Color(0xFF263B46), width: 1),
+                        boxShadow: const <BoxShadow>[
+                          BoxShadow(
+                            color: Color(0x66000000),
+                            blurRadius: 24,
+                            offset: Offset(0, 12),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          TextField(
+                            controller: _restaurant,
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              labelText: 'معرف أو اسم المطعم',
+                              hintText: 'Restaurant ID',
+                              hintStyle: const TextStyle(color: Color(0xFF859293)),
+                              labelStyle: const TextStyle(color: Color(0xFFB3C5C4)),
+                              prefixIcon: const Icon(Icons.storefront_rounded, color: Color(0xFF7EEDC1)),
+                              filled: true,
+                              fillColor: const Color(0xFF0C141A),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Color(0xFF263B46)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Color(0xFF263B46)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Color(0xFF2CD6A2), width: 1.5),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          TextField(
+                            controller: _user,
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              labelText: 'اسم العامل',
+                              hintText: 'Username',
+                              hintStyle: const TextStyle(color: Color(0xFF859293)),
+                              labelStyle: const TextStyle(color: Color(0xFFB3C5C4)),
+                              prefixIcon: const Icon(Icons.person_outline_rounded, color: Color(0xFF7EEDC1)),
+                              filled: true,
+                              fillColor: const Color(0xFF0C141A),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Color(0xFF263B46)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Color(0xFF263B46)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Color(0xFF2CD6A2), width: 1.5),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          TextField(
+                            controller: _secretController,
+                            obscureText: true,
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              labelText: 'كلمة المرور أو PIN',
+                              hintText: 'Password / PIN',
+                              hintStyle: const TextStyle(color: Color(0xFF859293)),
+                              labelStyle: const TextStyle(color: Color(0xFFB3C5C4)),
+                              prefixIcon: const Icon(Icons.lock_outline_rounded, color: Color(0xFF7EEDC1)),
+                              filled: true,
+                              fillColor: const Color(0xFF0C141A),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Color(0xFF263B46)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Color(0xFF263B46)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Color(0xFF2CD6A2), width: 1.5),
+                              ),
+                            ),
+                          ),
+                          if (_error != null) ...<Widget>[
+                            const SizedBox(height: 16),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: const Color(0x1AF44336),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: const Color(0xFFFF6B6B), width: 1),
+                              ),
+                              child: Text(
+                                _error!,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(color: Color(0xFFFFCACA), fontSize: 13),
+                              ),
+                            ),
+                          ],
+                          const SizedBox(height: 22),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(18),
+                              gradient: const LinearGradient(
+                                colors: <Color>[
+                                  Color(0xFF19B489),
+                                  Color(0xFF13795B),
+                                ],
+                              ),
+                            ),
+                            child: FilledButton.icon(
+                              onPressed: _busy ? null : _login,
+                              style: FilledButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                              ),
+                              icon: Icon(_busy ? Icons.hourglass_top_rounded : Icons.login_rounded),
+                              label: Text(
+                                _busy ? 'جارٍ التحقق...' : 'دخول العامل',
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 26),
+                  const Text(
+                    'محمي بنظام رموز سرية مشفرة',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFF7E8D95),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _homeView() {
@@ -115,6 +410,22 @@ class _WorkerWebScreenState extends State<WorkerWebScreen> {
       Expanded(child: _orders.isEmpty ? const Center(child: Text('No orders yet')) : ListView.builder(padding: const EdgeInsets.all(18), itemCount: _orders.length, itemBuilder: (_, int i) => _OrderCard(order: _orders[i]))),
     ]);
   }
+}
+
+class _ParticleBackgroundPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()..color = const Color(0xFF6EE7B7).withValues(alpha: 0.15);
+    for (int i = 0; i < 60; i++) {
+      final double x = (i * 97.3) % size.width;
+      final double y = ((i * 53.7) % size.height) * 0.98;
+      final double radius = 1.8 + (i % 4) * 0.7;
+      canvas.drawCircle(Offset(x, y), radius, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class _OrderCard extends StatelessWidget {
