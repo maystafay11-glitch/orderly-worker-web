@@ -21,25 +21,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Build Worker Web App
-        run: >-
-          flutter build web --release
-          --base-href /orderly-worker-web/
-          --dart-define=FIREBASE_DATABASE_URL=${{ secrets.FIREBASE_DATABASE_URL }}
-
+      - name: Prepare static Worker Web app
+        run: |
+          mkdir -p _site
+          cp index.html _site/index.html
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build/web
+          path: _site
 
   deploy:
     environment:
