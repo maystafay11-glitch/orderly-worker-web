@@ -1,3 +1,30 @@
+# Orderly Worker Web
+
+واجهة ويب مستقلة للعامل فقط، متوافقة مع تطبيق Orderly APK.
+
+## المزايا
+
+- دخول معزول باستخدام `Restaurant ID` واسم المستخدم وكلمة المرور أو PIN.
+- عرض الطلبات الخاصة بالعامل فقط.
+- إنشاء طلبات وتحديث حالتها مع مزامنة Firebase.
+- التقاط صورة إثبات من كاميرا iPhone.
+- لا تحتوي على لوحة المدير أو إعداداته.
+
+## التشغيل المحلي
+
+```bash
+flutter pub get
+flutter run -d chrome --dart-define=FIREBASE_DATABASE_URL=https://YOUR_DATABASE.firebaseio.com
+```
+
+## البناء والنشر
+
+```bash
+flutter build web --release --base-href /orderly-worker-web/ --dart-define=FIREBASE_DATABASE_URL=https://YOUR_DATABASE.firebaseio.com
+```
+
+يوجد Workflow جاهز لـ GitHub Pages في `.github/workflows/deploy-pages.yml`.
+أضف Secret باسم `FIREBASE_DATABASE_URL` ثم اختر GitHub Actions كمصدر Pages.
 # orderly_worker_web
 
 A new Flutter project.
