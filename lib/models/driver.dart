@@ -1,22 +1,22 @@
-/// Ù†Ù…ÙˆØ°Ø¬ Ø¨ÙŠØ§Ù†Ø§Øª Ø¹Ø§Ù…Ù„ Ø§Ù„ØªÙˆØµÙŠÙ„ (Driver) Ù…Ø¹ Ø¯Ø¹Ù… Ø±Ù…Ø² Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø§Ù„Ø³Ø±ÙŠØ¹ (1001-1030).
+/// نموذج بيانات عامل التوصيل (Driver) مع دعم رمز الدخول السريع (1001-1030).
 ///
-/// ÙŠØ¬Ù…Ø¹ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…ÙØ¯Ø®ÙŽÙ„Ø© Ù„ÙƒÙ„ Ø¹Ø§Ù…Ù„:
-/// * [Driver.name] Ø§Ø³Ù… Ø§Ù„Ø¹Ø§Ù…Ù„.
-/// * [Driver.pin] Ø±Ù…Ø² Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø§Ù„Ø³Ø±ÙŠØ¹ (Ù…Ù† 1001 Ø¥Ù„Ù‰ 1030 Ù„Ø¯Ø¹Ù… 30 Ø¹Ø§Ù…Ù„Ø§Ù‹).
-/// * [Driver.orders] Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ù…Ø³Ø¬ÙŽÙ‘Ù„Ø© Ø¨Ø§Ø³Ù…Ù‡ ÙˆÙ…Ø³Ø§Ø±Ø§ØªÙ‡Ø§.
+/// يجمع البيانات المُدخَلة لكل عامل:
+/// * [Driver.name] اسم العامل.
+/// * [Driver.pin] رمز الدخول السريع (من 1001 إلى 1030 لدعم 30 عاملاً).
+/// * [Driver.orders] قائمة الطلبات المسجَّلة باسمه ومساراتها.
 ///
-/// ÙˆÙŠØ­Ø³Ø¨ Ø§Ù„Ù‚ÙŠÙ… Ø§Ù„Ù…Ø§Ù„ÙŠØ© ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ù…Ù† Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø·Ù„Ø¨Ø§Øª:
-/// * [Driver.ordersCount] Ø¹Ø¯Ø¯ Ø§Ù„Ø·Ù„Ø¨Ø§Øª.
-/// * [Driver.totalOrdersAmount] Ù…Ø¬Ù…ÙˆØ¹ Ù…Ø¨Ø§Ù„Øº Ø§Ù„Ø·Ù„Ø¨Ø§Øª (Ø¨Ø§Ù„Ø¯ÙŠÙ†Ø§Ø±).
-/// * [Driver.wage] Ø£Ø¬Ø±Ø© Ø§Ù„Ø¹Ø§Ù…Ù„.
-/// * [Driver.netAmountToRestaurant] ØµØ§ÙÙŠ Ù‚ÙŠÙ…Ø© Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ù„Ù„Ù…Ø·Ø¹Ù….
+/// ويحسب القيم المالية تلقائياً من قائمة الطلبات:
+/// * [Driver.ordersCount] عدد الطلبات.
+/// * [Driver.totalOrdersAmount] مجموع مبالغ الطلبات (بالدينار).
+/// * [Driver.wage] أجرة العامل.
+/// * [Driver.netAmountToRestaurant] صافي قيمة الطلبات للمطعم.
 library;
 
 import 'package:orderly_worker_web/models/delivery_order.dart';
 import 'package:orderly_worker_web/models/order_payment_type.dart';
 
 class Driver {
-  /// Ø¥Ù†Ø´Ø§Ø¡ Ø¹Ø§Ù…Ù„ Ø¬Ø¯ÙŠØ¯.
+  /// إنشاء عامل جديد.
   const Driver({
     required this.name,
     this.pin = '',
@@ -26,7 +26,7 @@ class Driver {
     this.legacyOrdersAmount = 0,
   });
 
-  /// Ø¥Ù†Ø´Ø§Ø¡ Ø¹Ø§Ù…Ù„ Ù…Ù† Ø®Ø±ÙŠØ·Ø© (JSON) Ù…Ø³ØªØ±Ø¬ÙŽØ¹Ø© Ù…Ù† Ø§Ù„ØªØ®Ø²ÙŠÙ† Ø§Ù„Ù…Ø­Ù„ÙŠ.
+  /// إنشاء عامل من خريطة (JSON) مسترجَعة من التخزين المحلي.
   factory Driver.fromJson(Map<String, dynamic> json) {
     final bool hasOrdersKey = json.containsKey(keyOrders);
     return Driver(
@@ -46,15 +46,15 @@ class Driver {
     );
   }
 
-  /// Ø£Ø¬Ø±Ø© Ø§Ù„Ø¹Ø§Ù…Ù„ Ø¹Ù† Ø§Ù„Ø·Ù„Ø¨ Ø§Ù„ÙˆØ§Ø­Ø¯ Ø¨Ø§Ù„Ø¯ÙŠÙ†Ø§Ø± (Ø§Ù„Ù‚ÙŠÙ…Ø© Ø§Ù„Ø§ÙØªØ±Ø§Ø¶ÙŠØ©).
+  /// أجرة العامل عن الطلب الواحد بالدينار (القيمة الافتراضية).
   static const int defaultWagePerOrder = 1000;
 
-  /// Ù†Ø·Ø§Ù‚ Ø±Ù…ÙˆØ² Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø§Ù„Ø®Ø§ØµØ© Ø¨Ø§Ù„Ø³Ø§Ø¦Ù‚ÙŠÙ† (1001 Ø¥Ù„Ù‰ 1030).
+  /// نطاق رموز الدخول الخاصة بالسائقين (1001 إلى 1030).
   static const int minPin = 1001;
   static const int maxPin = 1030;
   static const int maxDrivers = 30;
 
-  /// Ù…ÙØ§ØªÙŠØ­ Ø§Ù„ØªØ®Ø²ÙŠÙ†/JSON.
+  /// مفاتيح التخزين/JSON.
   static const String keyName = 'name';
   static const String keyPin = 'pin';
   static const String keyOrders = 'orders';
@@ -64,28 +64,28 @@ class Driver {
   static const String keyTotalOrdersAmount = 'totalOrdersAmount';
   static const String keyWagePerOrder = 'wagePerOrder';
 
-  /// Ø§Ø³Ù… Ø§Ù„Ø¹Ø§Ù…Ù„.
+  /// اسم العامل.
   final String name;
 
-  /// Ø±Ù…Ø² Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø§Ù„Ø®Ø§Øµ Ø¨Ø§Ù„Ø³Ø§Ø¦Ù‚ (1001 Ø¥Ù„Ù‰ 1030).
+  /// رمز الدخول الخاص بالسائق (1001 إلى 1030).
   final String pin;
 
-  /// Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ù…Ø³Ø¬ÙŽÙ‘Ù„Ø© Ø¨Ø§Ø³Ù… Ø§Ù„Ø¹Ø§Ù…Ù„ (Ù…Ø±ØªÙ‘Ø¨Ø© Ø¨ØªØ±ØªÙŠØ¨ Ø§Ù„Ø¥Ø¶Ø§ÙØ©).
+  /// الطلبات المسجَّلة باسم العامل (مرتّبة بترتيب الإضافة).
   final List<DeliveryOrder> orders;
 
-  /// Ø£Ø¬Ø±Ø© Ø§Ù„Ø·Ù„Ø¨ Ø§Ù„ÙˆØ§Ø­Ø¯ Ø¨Ø§Ù„Ø¯ÙŠÙ†Ø§Ø±.
+  /// أجرة الطلب الواحد بالدينار.
   final int wagePerOrder;
 
-  /// Ø¹Ø¯Ø¯ Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ù…ÙØ±Ø­ÙŽÙ‘Ù„Ø© Ù…Ù† Ø¥ØµØ¯Ø§Ø± Ø³Ø§Ø¨Ù‚ (Ø¨Ø¯ÙˆÙ† ØªÙØ§ØµÙŠÙ„ Ù„ÙƒÙ„ Ø·Ù„Ø¨).
+  /// عدد الطلبات المُرحَّلة من إصدار سابق (بدون تفاصيل لكل طلب).
   final int legacyOrdersCount;
 
-  /// Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ù…Ø¨Ø§Ù„Øº Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ù…ÙØ±Ø­ÙŽÙ‘Ù„Ø© Ù…Ù† Ø¥ØµØ¯Ø§Ø± Ø³Ø§Ø¨Ù‚.
+  /// إجمالي مبالغ الطلبات المُرحَّلة من إصدار سابق.
   final double legacyOrdersAmount;
 
-  /// Ø±Ù…Ø² Ø§Ù„Ø¹Ø±Ø¶ (Ø£Ùˆ Ø§Ù„Ø±Ù…Ø² Ø§Ù„Ù…Ù‚ØªØ±Ø­ Ø¥Ø°Ø§ Ù„Ù… ÙŠÙƒÙ† Ù…Ø®ØµØµØ§Ù‹).
-  String get displayPin => pin.isNotEmpty ? pin : 'Ø¨Ø¯ÙˆÙ† Ø±Ù…Ø²';
+  /// رمز العرض (أو الرمز المقترح إذا لم يكن مخصصاً).
+  String get displayPin => pin.isNotEmpty ? pin : 'بدون رمز';
 
-  /// Ø¥ÙŠØ¬Ø§Ø¯ Ø£ÙˆÙ„ Ø±Ù…Ø² Ù…ØªØ§Ø­ ÙˆØºÙŠØ± Ù…Ø³ØªØ®Ø¯Ù… Ø¨ÙŠÙ† 1001 Ùˆ 1030 Ù„Ø¯Ø¹Ù… Ø§Ù„ØªØ®ØµÙŠØµ Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠ.
+  /// إيجاد أول رمز متاح وغير مستخدم بين 1001 و 1030 لدعم التخصيص التلقائي.
   static String findNextAvailablePin(Iterable<Driver> drivers) {
     final Set<String> usedPins = drivers
         .map((Driver d) => d.pin.trim())
@@ -101,56 +101,56 @@ class Driver {
     return minPin.toString();
   }
 
-  /// Ø¹Ø¯Ø¯ Ø§Ù„Ø·Ù„Ø¨Ø§Øª = Ø¹Ø¯Ø¯ Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ù…Ø³Ø¬ÙŽÙ‘Ù„Ø© + Ø§Ù„Ø£Ø±Ù‚Ø§Ù… Ø§Ù„Ù…ÙØ±Ø­ÙŽÙ‘Ù„Ø©.
+  /// عدد الطلبات = عدد الطلبات المسجَّلة + الأرقام المُرحَّلة.
   int get ordersCount => orders.length + legacyOrdersCount;
 
-  /// Ù…Ø¬Ù…ÙˆØ¹ Ù…Ø¨Ø§Ù„Øº Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø¨Ø§Ù„Ø¯ÙŠÙ†Ø§Ø± = Ù…Ø¨Ø§Ù„Øº Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ù…Ø³Ø¬ÙŽÙ‘Ù„Ø© + Ø§Ù„Ù…ÙØ±Ø­ÙŽÙ‘Ù„Ø©.
+  /// مجموع مبالغ الطلبات بالدينار = مبالغ الطلبات المسجَّلة + المُرحَّلة.
   double get totalOrdersAmount =>
       legacyOrdersAmount +
       orders.fold<double>(0, (double sum, DeliveryOrder order) {
         return sum + order.amount;
       });
 
-  /// Ø¹Ø¯Ø¯ Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„ØªÙŠ ØªÙØ­ØªØ³Ø¨ Ù„Ù‡Ø§ Ø£Ø¬Ø±Ø© ØªÙˆØµÙŠÙ„ (Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ù†Ù‚Ø¯ÙŠØ© ÙÙ‚Ø·).
+  /// عدد الطلبات التي تُحتسب لها أجرة توصيل (الطلبات النقدية فقط).
   int get wageEligibleOrdersCount =>
       legacyOrdersCount +
       orders
           .where((DeliveryOrder order) => order.countsWage)
           .length;
 
-  /// Ø¹Ø¯Ø¯ Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ø®Ø§ØµØ© Ø¨Ø£Ø¬Ø±Ø© ØµÙØ± (Ù…Ø§Ø³ØªØ± ÙƒØ§Ø±Ø¯ Ø£Ùˆ Ø§Ø³ØªÙ„Ø§Ù… Ù…Ø¨Ø§Ø´Ø±).
+  /// عدد الطلبات الخاصة بأجرة صفر (ماستر كارد أو استلام مباشر).
   int get zeroWageOrdersCount =>
       orders.where((DeliveryOrder order) => order.hasZeroWage).length;
 
-  /// Ù…Ø¬Ù…ÙˆØ¹ Ù…Ø¨Ø§Ù„Øº Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ø®Ø§ØµØ© Ø¨Ø£Ø¬Ø±Ø© ØµÙØ±.
+  /// مجموع مبالغ الطلبات الخاصة بأجرة صفر.
   double get zeroWageOrdersAmount => orders
       .where((DeliveryOrder order) => order.hasZeroWage)
       .fold<double>(0, (double sum, DeliveryOrder order) => sum + order.amount);
 
-  /// Ù…Ø¬Ù…ÙˆØ¹ Ù…Ø¨Ø§Ù„Øº Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ù†Ù‚Ø¯ÙŠØ© (Ø§Ù„Ù…Ø¨Ø§Ù„Øº Ø§Ù„ØªÙŠ ÙŠØ­Ù…Ù„Ù‡Ø§ Ø§Ù„Ø¹Ø§Ù…Ù„ Ù†Ù‚Ø¯Ø§Ù‹).
+  /// مجموع مبالغ الطلبات النقدية (المبالغ التي يحملها العامل نقداً).
   double get cashOrdersAmount =>
       legacyOrdersAmount +
       orders
           .where((DeliveryOrder order) => order.collectsCash)
           .fold<double>(0, (double sum, DeliveryOrder order) => sum + order.amount);
 
-  /// Ù‡Ù„ ÙŠÙˆØ¬Ø¯ Ø·Ù„Ø¨Ø§Øª Ø¨Ø­Ø§Ù„Ø© Ø®Ø§ØµØ© Ø¨Ø£Ø¬Ø±Ø© ØµÙØ±ØŸ
+  /// هل يوجد طلبات بحالة خاصة بأجرة صفر؟
   bool get hasZeroWageOrders => zeroWageOrdersCount > 0;
 
-  /// Ù‡Ù„ Ø£Ø¬Ø±Ø© Ø§Ù„Ø·Ù„Ø¨ Ø§Ù„ÙˆØ§Ø­Ø¯ Ù„Ù‡Ø°Ø§ Ø§Ù„Ø¹Ø§Ù…Ù„ ØµÙØ±ØŸ
+  /// هل أجرة الطلب الواحد لهذا العامل صفر؟
   bool get hasZeroWageRate => wagePerOrder == 0;
 
-  /// Ø£Ø¬Ø±Ø© Ø§Ù„Ø¹Ø§Ù…Ù„ Ø§Ù„Ù…Ø³ØªØ­Ù‚Ø©.
+  /// أجرة العامل المستحقة.
   double get wage => wageEligibleOrdersCount * wagePerOrder.toDouble();
 
-  /// ØµØ§ÙÙŠ Ù‚ÙŠÙ…Ø© Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ù„Ù„Ù…Ø·Ø¹Ù….
+  /// صافي قيمة الطلبات للمطعم.
   double get netAmountToRestaurant => totalOrdersAmount;
 
-  /// Ù‡Ù„ ÙŠÙˆØ¬Ø¯ Ø¹Ø¯Ø¯/Ù…Ø¨Ù„Øº Ø·Ù„Ø¨Ø§Øª Ù…ÙØ±Ø­ÙŽÙ‘Ù„ Ù…Ù† Ø¥ØµØ¯Ø§Ø± Ø³Ø§Ø¨Ù‚ØŸ
+  /// هل يوجد عدد/مبلغ طلبات مُرحَّل من إصدار سابق؟
   bool get hasLegacyOrders =>
       legacyOrdersCount > 0 || legacyOrdersAmount > 0;
 
-  /// Ø±Ù‚Ù… Ù…Ù‚ØªØ±Ø­ Ù„Ù„Ø·Ù„Ø¨ Ø§Ù„Ø¬Ø¯ÙŠØ¯.
+  /// رقم مقترح للطلب الجديد.
   String get suggestedOrderNumber {
     int highest = 0;
     for (final DeliveryOrder order in orders) {
@@ -162,7 +162,7 @@ class Driver {
     return '${(highest > 0 ? highest : ordersCount) + 1}';
   }
 
-  /// Ù†Ø³Ø®Ø© Ø¬Ø¯ÙŠØ¯Ø© Ù…Ù† Ø§Ù„Ø¹Ø§Ù…Ù„ Ù…Ø¹ ØªØ¹Ø¯ÙŠÙ„ Ø¨Ø¹Ø¶ Ø§Ù„Ù‚ÙŠÙ….
+  /// نسخة جديدة من العامل مع تعديل بعض القيم.
   Driver copyWith({
     String? name,
     String? pin,
@@ -179,7 +179,7 @@ class Driver {
     legacyOrdersAmount: legacyOrdersAmount ?? this.legacyOrdersAmount,
   );
 
-  /// Ø¥Ø¶Ø§ÙØ© Ø·Ù„Ø¨ Ø¬Ø¯ÙŠØ¯ Ø¨Ù‚ÙŠÙ…Ø© [amount] Ø¯ÙŠÙ†Ø§Ø± Ø¥Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¹Ø§Ù…Ù„.
+  /// إضافة طلب جديد بقيمة [amount] دينار إلى هذا العامل.
   Driver addOrder(
     double amount, {
     String orderNumber = '',
@@ -196,7 +196,7 @@ class Driver {
     ),
   );
 
-  /// Ø¥Ø¶Ø§ÙØ© Ø·Ù„Ø¨ Ø¬Ø§Ù‡Ø² (Ø¨ÙƒÙ„ ØªÙØ§ØµÙŠÙ„Ù‡) Ø¥Ù„Ù‰ Ø­Ø³Ø§Ø¨ Ø§Ù„Ø¹Ø§Ù…Ù„ Ù…Ø¹ Ø±Ø¨Ø·Ù‡ Ø¨Ø§Ù„Ø±Ù…Ø² ÙˆØ§Ù„Ø§Ø³Ù….
+  /// إضافة طلب جاهز (بكل تفاصيله) إلى حساب العامل مع ربطه بالرمز والاسم.
   Driver addDeliveryOrder(DeliveryOrder order) {
     final DeliveryOrder linked = (order.driverPin == null || order.driverPin!.isEmpty)
         ? order.copyWith(driverPin: pin, driverName: name)
@@ -206,7 +206,7 @@ class Driver {
     );
   }
 
-  /// Ø­Ø°Ù Ø§Ù„Ø·Ù„Ø¨ Ø§Ù„ÙˆØ§Ù‚Ø¹ ÙÙŠ Ø§Ù„ØªØ±ØªÙŠØ¨ [index] Ù…Ù† Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø·Ù„Ø¨Ø§Øª.
+  /// حذف الطلب الواقع في الترتيب [index] من قائمة الطلبات.
   Driver removeOrderAt(int index) {
     if (index < 0 || index >= orders.length) {
       return this;
@@ -219,17 +219,17 @@ class Driver {
     );
   }
 
-  /// Ø­Ø°Ù Ø£ÙˆÙ„ Ø·Ù„Ø¨ Ù…Ø·Ø§Ø¨Ù‚ Ù„Ù„Ø·Ù„Ø¨ [order].
+  /// حذف أول طلب مطابق للطلب [order].
   Driver removeOrder(DeliveryOrder order) => removeOrderAt(orders.indexOf(order));
 
-  /// ØªØµÙÙŠØ± Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„ÙŠÙˆÙ… Ù…Ø¹ Ø§Ù„Ø§Ø­ØªÙØ§Ø¸ Ø¨Ø§Ø³Ù… Ø§Ù„Ø¹Ø§Ù…Ù„ ÙˆØ±Ù…Ø²Ù‡ Ø§Ù„Ø®Ø§Øµ ÙˆØ£Ø¬Ø±Ø© Ø§Ù„Ø·Ù„Ø¨.
+  /// تصفير حسابات اليوم مع الاحتفاظ باسم العامل ورمزه الخاص وأجرة الطلب.
   Driver resetDay() => copyWith(
     orders: const <DeliveryOrder>[],
     legacyOrdersCount: 0,
     legacyOrdersAmount: 0,
   );
 
-  /// ØªØ­ÙˆÙŠÙ„ Ø§Ù„Ø¹Ø§Ù…Ù„ Ø¥Ù„Ù‰ Ø®Ø±ÙŠØ·Ø© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªØ®Ø²ÙŠÙ† Ø¨ØµÙŠØºØ© JSON Ø£Ùˆ Firebase.
+  /// تحويل العامل إلى خريطة قابلة للتخزين بصيغة JSON أو Firebase.
   Map<String, dynamic> toJson() => <String, dynamic>{
     keyName: name,
     keyPin: pin,
@@ -239,7 +239,7 @@ class Driver {
     keyWagePerOrder: wagePerOrder,
   };
 
-  /// Ù‚Ø±Ø§Ø¡Ø© Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ù…Ø­ÙÙˆØ¸Ø© Ø¨Ø£Ù…Ø§Ù†.
+  /// قراءة قائمة الطلبات المحفوظة بأمان.
   static List<DeliveryOrder> _readOrders(Object? value) {
     if (value is! List) {
       return const <DeliveryOrder>[];
@@ -253,7 +253,7 @@ class Driver {
         .toList();
   }
 
-  /// Ù‚Ø±Ø§Ø¡Ø© Ù‚ÙŠÙ…Ø© ØµØ­ÙŠØ­Ø© Ù…Ù† JSON Ø¨Ø£Ù…Ø§Ù†.
+  /// قراءة قيمة صحيحة من JSON بأمان.
   static int _readInt(Object? value, {int fallback = 0}) {
     if (value is int) return value;
     if (value is num) return value.round();
@@ -262,7 +262,7 @@ class Driver {
         fallback;
   }
 
-  /// Ù‚Ø±Ø§Ø¡Ø© Ù‚ÙŠÙ…Ø© Ø¹Ø´Ø±ÙŠØ© Ù…Ù† JSON Ø¨Ø£Ù…Ø§Ù†.
+  /// قراءة قيمة عشرية من JSON بأمان.
   static double _readDouble(Object? value) {
     if (value is double) return value;
     if (value is num) return value.toDouble();
@@ -289,7 +289,7 @@ class Driver {
           other.legacyOrdersAmount == legacyOrdersAmount &&
           _sameOrders(other.orders, orders);
 
-  /// Ù…Ù‚Ø§Ø±Ù†Ø© Ù‚Ø§Ø¦Ù…ØªÙŠ Ø·Ù„Ø¨Ø§Øª Ø¹Ù†ØµØ±Ø§Ù‹ Ø¨Ø¹Ù†ØµØ±.
+  /// مقارنة قائمتي طلبات عنصراً بعنصر.
   static bool _sameOrders(List<DeliveryOrder> a, List<DeliveryOrder> b) {
     if (identical(a, b)) {
       return true;

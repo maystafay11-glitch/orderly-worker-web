@@ -1,12 +1,12 @@
-/// Ù†Ù…ÙˆØ°Ø¬ Ù…Ù„Ø®Øµ Ø£Ø³Ø¨ÙˆØ¹ÙŠ ÙŠÙØ¤Ø±Ø´Ù Ø¹Ù†Ø¯ ØªØµÙÙŠØ± Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹ÙŠØ©.
+/// نموذج ملخص أسبوعي يُؤرشف عند تصفير الحسابات الأسبوعية.
 ///
-/// ÙŠØ­ØªÙˆÙŠ Ø¹Ù„Ù‰ Ø¥Ø¬Ù…Ø§Ù„ÙŠØ§Øª Ø§Ù„ÙØªØ±Ø© Ù„ØªØªØ¨Ø¹Ù‡Ø§ Ù„Ø§Ø­Ù‚Ø§Ù‹ ÙÙŠ Â«Ø§Ù„Ù…Ù„Ø®Øµ Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹ÙŠÂ»:
-/// * [WeeklyArchive.totalOrders] Ø¹Ø¯Ø¯ Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„ÙƒÙ„ÙŠ Ø®Ù„Ø§Ù„ Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹.
-/// * [WeeklyArchive.totalAmount] Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø¨Ø§Ù„Øº Ø¨Ø§Ù„Ø¯ÙŠÙ†Ø§Ø±.
-/// * [WeeklyArchive.totalWage] Ø£Ø¬ÙˆØ± Ø§Ù„Ø¹Ù…Ø§Ù„ Ø®Ù„Ø§Ù„ Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹.
-/// * [WeeklyArchive.netAmount] ØµØ§ÙÙŠ Ø£Ø±Ø¨Ø§Ø­ Ø§Ù„Ù…Ø·Ø¹Ù….
-/// * [WeeklyArchive.periodStart]/[WeeklyArchive.periodEnd] ØªÙˆØ§Ø±ÙŠØ® Ø§Ù„ÙØªØ±Ø©.
-/// * [WeeklyArchive.createdAt] ÙˆÙ‚Øª Ø§Ù„Ø£Ø±Ø´ÙØ©.
+/// يحتوي على إجماليات الفترة لتتبعها لاحقاً في «الملخص الأسبوعي»:
+/// * [WeeklyArchive.totalOrders] عدد الطلبات الكلي خلال الأسبوع.
+/// * [WeeklyArchive.totalAmount] إجمالي المبالغ بالدينار.
+/// * [WeeklyArchive.totalWage] أجور العمال خلال الأسبوع.
+/// * [WeeklyArchive.netAmount] صافي أرباح المطعم.
+/// * [WeeklyArchive.periodStart]/[WeeklyArchive.periodEnd] تواريخ الفترة.
+/// * [WeeklyArchive.createdAt] وقت الأرشفة.
 library;
 
 class WeeklyArchive {

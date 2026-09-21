@@ -4,25 +4,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:orderly_worker_web/models/weekly_archive.dart';
 
-/// Ø­ÙØ¸ ÙˆØ§Ø³ØªØ±Ø¬Ø§Ø¹ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ (Ø±Ù‚Ù… ÙˆØ§ØªØ³Ø§Ø¨ Ø§Ù„Ù…Ø¯ÙŠØ±ØŒ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª FirebaseØŒ ÙˆØ§Ù„ÙˆÙ‚Øª Ø§Ù„Ù…Ø¹ØªØ§Ø¯).
+/// حفظ واسترجاع إعدادات التطبيق (رقم واتساب المدير، إعدادات Firebase، والوقت المعتاد).
 class AppSettings {
   const AppSettings._();
 
-  // --- Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø±Ù‚Ù… ÙˆØ§ØªØ³Ø§Ø¨ Ø§Ù„Ù…Ø¯ÙŠØ± ---
+  // --- إعدادات رقم واتساب المدير ---
   static const String whatsAppPhoneKey = 'whatsapp_phone';
 
-  // --- Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø±Ù…Ø² Ø§Ù„Ù…Ø¯ÙŠØ± Ø§Ù„Ø³Ø±ÙŠ (Admin PIN) ---
+  // --- إعدادات رمز المدير السري (Admin PIN) ---
   static const String adminPinKey = 'admin_pin_code';
   static const String defaultAdminPin = '7777';
 
-  // --- Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„ØªØªØ¨Ø¹ ÙˆØ§Ù„Ø±Ø¨Ø· Ø§Ù„Ø³Ø­Ø§Ø¨ÙŠ (Firebase) ---
+  // --- إعدادات التتبع والربط السحابي (Firebase) ---
   static const String firebaseDatabaseUrlKey = 'firebase_database_url';
   static const String expectedDurationKey = 'expected_delivery_duration_mins';
   static const String soundAlertsKey = 'sound_alerts_enabled';
 
   static Future<SharedPreferences> get _prefs => SharedPreferences.getInstance();
 
-  /// Ù‚Ø±Ø§Ø¡Ø© Ø±Ù…Ø² Ø§Ù„Ù…Ø¯ÙŠØ± Ø§Ù„Ø³Ø±ÙŠ (Ø§Ù„Ø§ÙØªØ±Ø§Ø¶ÙŠ: 7777).
+  /// قراءة رمز المدير السري (الافتراضي: 7777).
   static Future<String> getAdminPin() async {
     final SharedPreferences prefs = await _prefs;
     final String? pin = prefs.getString(adminPinKey);
@@ -32,7 +32,7 @@ class AppSettings {
     return pin.trim();
   }
 
-  /// Ø­ÙØ¸ / ØªØ¹Ø¯ÙŠÙ„ Ø±Ù…Ø² Ø§Ù„Ù…Ø¯ÙŠØ± Ø§Ù„Ø³Ø±ÙŠ.
+  /// حفظ / تعديل رمز المدير السري.
   static Future<void> setAdminPin(String newPin) async {
     final SharedPreferences prefs = await _prefs;
     final String clean = newPin.trim();
@@ -41,64 +41,64 @@ class AppSettings {
     }
   }
 
-  /// Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØªØ·Ø§Ø¨Ù‚ Ø§Ù„Ø±Ù…Ø² Ø§Ù„Ù…Ø¯Ø®Ù„ Ù…Ø¹ Ø±Ù…Ø² Ø§Ù„Ù…Ø¯ÙŠØ±.
+  /// التحقق من تطابق الرمز المدخل مع رمز المدير.
   static Future<bool> verifyAdminPin(String enteredPin) async {
     final String current = await getAdminPin();
     return current == enteredPin.trim();
   }
 
-  /// Ù‚Ø±Ø§Ø¡Ø© Ø±Ù‚Ù… Ù‡Ø§ØªÙ Ø§Ù„Ù…Ø¯ÙŠØ±/Ø§Ù„Ù…Ø·Ø¹Ù… Ø§Ù„Ù…Ø®Ø²Ù† Ø¨ØµÙŠØºØªÙ‡ Ø§Ù„Ø¯ÙˆÙ„ÙŠØ© (Ø¨Ø¯ÙˆÙ† +).
+  /// قراءة رقم هاتف المدير/المطعم المخزن بصيغته الدولية (بدون +).
   static Future<String> getWhatsAppPhone() async {
     final SharedPreferences prefs = await _prefs;
     return (prefs.getString(whatsAppPhoneKey) ?? '').trim();
   }
 
-  /// Ø­ÙØ¸ / ØªØ­Ø¯ÙŠØ« Ø±Ù‚Ù… Ù‡Ø§ØªÙ Ø§Ù„Ù…Ø¯ÙŠØ± Ø§Ù„Ù…Ø­Ù„ÙŠ.
+  /// حفظ / تحديث رقم هاتف المدير المحلي.
   static Future<void> setWhatsAppPhone(String phone) async {
     final SharedPreferences prefs = await _prefs;
     await prefs.setString(whatsAppPhoneKey, phone.trim());
   }
 
-  /// Ù‚Ø±Ø§Ø¡Ø© Ø¹Ù†ÙˆØ§Ù† Ù‚Ø§Ø¹Ø¯Ø© Ø¨ÙŠØ§Ù†Ø§Øª Firebase Ø§Ù„Ø³Ø­Ø§Ø¨ÙŠØ©.
+  /// قراءة عنوان قاعدة بيانات Firebase السحابية.
   static Future<String> getFirebaseDatabaseUrl() async {
     final SharedPreferences prefs = await _prefs;
     return (prefs.getString(firebaseDatabaseUrlKey) ?? '').trim();
   }
 
-  /// Ø­ÙØ¸ Ø¹Ù†ÙˆØ§Ù† Ù‚Ø§Ø¹Ø¯Ø© Ø¨ÙŠØ§Ù†Ø§Øª Firebase Ø§Ù„Ø³Ø­Ø§Ø¨ÙŠØ©.
+  /// حفظ عنوان قاعدة بيانات Firebase السحابية.
   static Future<void> setFirebaseDatabaseUrl(String url) async {
     final SharedPreferences prefs = await _prefs;
     await prefs.setString(firebaseDatabaseUrlKey, url.trim());
   }
 
-  /// Ù…Ø¯Ø© Ø§Ù„Ø·Ø±ÙŠÙ‚ Ø§Ù„Ù…Ø¹ØªØ§Ø¯Ø© Ø¨Ø§Ù„Ø¯Ù‚Ø§Ø¦Ù‚ Ù„ÙƒØ´Ù Ø§Ù„ØªØ£Ø®ÙŠØ± ÙˆØ§Ù„ØªØ³Ø®ÙŠØª (Ø§ÙØªØ±Ø§Ø¶ÙŠØ§Ù‹ 25 Ø¯Ù‚ÙŠÙ‚Ø©).
+  /// مدة الطريق المعتادة بالدقائق لكشف التأخير والتسخيت (افتراضياً 25 دقيقة).
   static Future<int> getExpectedDeliveryDuration() async {
     final SharedPreferences prefs = await _prefs;
     return prefs.getInt(expectedDurationKey) ?? 25;
   }
 
-  /// ØªØ¹Ø¯ÙŠÙ„ Ù…Ø¯Ø© Ø§Ù„Ø·Ø±ÙŠÙ‚ Ø§Ù„Ù…Ø¹ØªØ§Ø¯Ø©.
+  /// تعديل مدة الطريق المعتادة.
   static Future<void> setExpectedDeliveryDuration(int minutes) async {
     final SharedPreferences prefs = await _prefs;
     await prefs.setInt(expectedDurationKey, minutes);
   }
 
-  /// Ù‡Ù„ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„ØµÙˆØªÙŠØ© Ù„Ù„Ø·Ù„Ø¨Ø§Øª ÙˆØ§Ù„ØªØ³Ù„ÙŠÙ… Ù…ÙØ¹Ù„Ø©ØŸ
+  /// هل التنبيهات الصوتية للطلبات والتسليم مفعلة؟
   static Future<bool> getSoundAlertsEnabled() async {
     final SharedPreferences prefs = await _prefs;
     return prefs.getBool(soundAlertsKey) ?? true;
   }
 
-  /// ØªÙØ¹ÙŠÙ„ / ÙƒØªÙ… Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„ØµÙˆØªÙŠØ©.
+  /// تفعيل / كتم التنبيهات الصوتية.
   static Future<void> setSoundAlertsEnabled(bool enabled) async {
     final SharedPreferences prefs = await _prefs;
     await prefs.setBool(soundAlertsKey, enabled);
   }
 
-  // --- Ø§Ù„Ø£Ø±Ø´ÙŠÙ Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹ÙŠ ---
+  // --- الأرشيف الأسبوعي ---
   static const String archivesKey = 'weekly_archives';
 
-  /// Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø£Ø±Ø´ÙŠÙØ§Øª Ø§Ù„Ù…Ø®Ø²Ù†Ø© (Ù…Ø±ØªÙ‘Ø¨Ø© Ù…Ù† Ø§Ù„Ø£Ø­Ø¯Ø« Ø¥Ù„Ù‰ Ø§Ù„Ø£Ù‚Ø¯Ù…).
+  /// جميع الأرشيفات المخزنة (مرتّبة من الأحدث إلى الأقدم).
   static Future<List<WeeklyArchive>> loadArchives() async {
     final SharedPreferences prefs = await _prefs;
     try {
@@ -124,7 +124,7 @@ class AppSettings {
     }
   }
 
-  /// Ø­ÙØ¸ / Ø§Ø³ØªØ¨Ø¯Ø§Ù„ Ø§Ù„Ø£Ø±Ø´ÙŠÙØ§Øª.
+  /// حفظ / استبدال الأرشيفات.
   static Future<void> saveArchives(List<WeeklyArchive> archives) async {
     final SharedPreferences prefs = await _prefs;
     if (archives.isEmpty) {
@@ -137,7 +137,7 @@ class AppSettings {
     await prefs.setString(archivesKey, payload);
   }
 
-  /// Ø¥ØºÙ„Ø§Ù‚ ÙØªØ±Ø© Ø£Ø³Ø¨ÙˆØ¹ÙŠØ©: Ø£Ø±Ø´ÙØ© Ù…Ù„Ø®ØµÙ‡Ø§ Ø§Ù„Ø¢Ù†ØŒ Ø«Ù… Ø­Ø°Ù Ø§Ù„Ø£Ø±Ø´ÙŠÙØ§Øª Ø§Ù„Ø£Ù‚Ø¯Ù… Ù…Ù† Ø£Ø³Ø¨ÙˆØ¹.
+  /// إغلاق فترة أسبوعية: أرشفة ملخصها الآن، ثم حذف الأرشيفات الأقدم من أسبوع.
   static Future<void> archiveWeek({
     required int totalOrders,
     required double totalAmount,
@@ -160,7 +160,7 @@ class AppSettings {
     await _pruneOld(archives);
   }
 
-  /// Ø­Ø°Ù Ø§Ù„Ø£Ø±Ø´ÙŠÙØ§Øª Ø§Ù„ØªÙŠ Ù…Ø±Ù‘ Ø¹Ù„ÙŠÙ‡Ø§ Ø£ÙƒØ«Ø± Ù…Ù† 7 Ø£ÙŠØ§Ù… (ØªÙ†Ù‚ÙŠØ© Ø£Ø³Ø¨ÙˆØ¹ÙŠØ©).
+  /// حذف الأرشيفات التي مرّ عليها أكثر من 7 أيام (تنقية أسبوعية).
   static Future<void> pruneOldArchives() async {
     final List<WeeklyArchive> archives = await loadArchives();
     await _pruneOld(archives);
@@ -174,7 +174,7 @@ class AppSettings {
     await saveArchives(kept);
   }
 
-  /// Ù…Ø³Ø­ ÙƒÙ„ Ø§Ù„Ø£Ø±Ø´ÙŠÙØ§Øª ÙˆØ§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª (Ù„Ù„Ø§Ø®ØªØ¨Ø§Ø±Ø§Øª ÙÙ‚Ø·).
+  /// مسح كل الأرشيفات والإعدادات (للاختبارات فقط).
   static Future<void> clearAll() async {
     final SharedPreferences prefs = await _prefs;
     await prefs.remove(whatsAppPhoneKey);
@@ -187,10 +187,10 @@ class AppSettings {
     await prefs.remove('orderly_distributor_license_activated');
   }
 
-  // --- ØªÙ†Ø¨ÙŠÙ‡ Ø£Ø³Ø¨ÙˆØ¹ÙŠ ---
+  // --- تنبيه أسبوعي ---
   static const String _lastNoticeKey = 'weekly_notice_last_shown';
 
-  /// Ø¢Ø®Ø± Ù…Ø±Ø© Ø¹Ø±Ø¶ ÙÙŠÙ‡Ø§ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡ Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹ÙŠ (Ø£Ùˆ ØªØ§Ø±ÙŠØ® Ø¨Ø¹ÙŠØ¯ Ø¥Ø°Ø§ Ù„Ù… ÙŠÙØ¹Ø±Ø¶ Ø£Ø¨Ø¯Ø§Ù‹).
+  /// آخر مرة عرض فيها التنبيه الأسبوعي (أو تاريخ بعيد إذا لم يُعرض أبداً).
   static Future<DateTime> getLastWeeklyNotice() async {
     final SharedPreferences prefs = await _prefs;
     final String? raw = prefs.getString(_lastNoticeKey);
@@ -201,7 +201,7 @@ class AppSettings {
     return parsed ?? DateTime(2000);
   }
 
-  /// ØªØ³Ø¬ÙŠÙ„ Ø£Ù† Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡ Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹ÙŠ Ø¹ÙØ±Ø¶ ÙÙŠ [when].
+  /// تسجيل أن التنبيه الأسبوعي عُرض في [when].
   static Future<void> setLastWeeklyNotice(DateTime when) async {
     final SharedPreferences prefs = await _prefs;
     await prefs.setString(_lastNoticeKey, when.toIso8601String());

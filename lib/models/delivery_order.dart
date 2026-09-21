@@ -1,24 +1,24 @@
-/// Ù†Ù…ÙˆØ°Ø¬ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø·Ù„Ø¨ Ø§Ù„ÙˆØ§Ø­Ø¯ Ø§Ù„Ù…Ø³Ø¬ÙŽÙ‘Ù„ Ù„Ø¹Ø§Ù…Ù„ Ø§Ù„ØªÙˆØµÙŠÙ„ Ù…Ø¹ Ø§Ù„ØªØªØ¨Ø¹ Ø§Ù„Ù„Ø­Ø¸ÙŠ.
+/// نموذج بيانات الطلب الواحد المسجَّل لعامل التوصيل مع التتبع اللحظي.
 ///
-/// ÙŠØ­ØªÙˆÙŠ ÙƒÙ„ Ø·Ù„Ø¨ Ø¹Ù„Ù‰:
-/// * [DeliveryOrder.id] Ù…Ø¹Ø±Ù ÙØ±ÙŠØ¯ Ù„Ù„Ø·Ù„Ø¨ Ù„Ù…Ø²Ø§Ù…Ù†ØªÙ‡ Ù„Ø­Ø¸ÙŠØ§Ù‹ Ø³Ø­Ø§Ø¨ÙŠØ§Ù‹.
-/// * [DeliveryOrder.orderNumber] Ø±Ù‚Ù… Ø§Ù„Ø·Ù„Ø¨ (Ù†Øµ Ø­Ø± Ù„ØªÙ†Ø¸ÙŠÙ… Ø§Ù„Ø£ÙˆØ±Ø¯Ø±Ø§Øª).
-/// * [DeliveryOrder.amount] Ø³Ø¹Ø± Ø§Ù„Ø·Ù„Ø¨ Ø¨Ø§Ù„Ø¯ÙŠÙ†Ø§Ø±.
-/// * [DeliveryOrder.paymentType] Ù†ÙˆØ¹ Ø§Ù„Ø¯ÙØ¹ (ÙƒØ§Ø´ / Ù…Ø§Ø³ØªØ± ÙƒØ§Ø±Ø¯ / Ø§Ø³ØªÙ„Ø§Ù… Ù…Ø¨Ø§Ø´Ø±).
-/// * [DeliveryOrder.addedAt] ÙˆÙ‚Øª Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ø·Ù„Ø¨.
-/// * [DeliveryOrder.status] Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù„Ø¨ (Ù‚ÙŠØ¯ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ âž¡ï¸ Ù…Ø¹ Ø§Ù„Ø³Ø§Ø¦Ù‚ âž¡ï¸ ØªÙ… Ø§Ù„ØªØ³Ù„ÙŠÙ…).
-/// * [DeliveryOrder.driverPin] Ø±Ù…Ø² Ø§Ù„Ø³Ø§Ø¦Ù‚ Ø§Ù„Ù…Ø³Ù†Ø¯ Ø¥Ù„ÙŠÙ‡ Ø§Ù„Ø·Ù„Ø¨ (1001 - 1030).
-/// * [DeliveryOrder.driverName] Ø§Ø³Ù… Ø§Ù„Ø³Ø§Ø¦Ù‚ Ø§Ù„Ù…Ø³Ù†Ø¯ Ø¥Ù„ÙŠÙ‡ Ø§Ù„Ø·Ù„Ø¨.
-/// * [DeliveryOrder.pickedUpAt] ÙˆÙ‚Øª Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„ÙØ¹Ù„ÙŠ Ù…Ù† Ø§Ù„Ù…Ø·Ø¹Ù… ÙˆØ¨Ø¯Ø¡ Ø§Ù„Ø·Ø±ÙŠÙ‚.
-/// * [DeliveryOrder.deliveredAt] ÙˆÙ‚Øª ØªØ³Ù„ÙŠÙ… Ø§Ù„Ø·Ù„Ø¨ Ù„Ù„Ø²Ø¨ÙˆÙ† Ø¨Ø§Ù„ÙƒØ§Ù…Ù„.
-/// * [DeliveryOrder.expectedDurationMinutes] Ø§Ù„ÙˆÙ‚Øª Ø§Ù„Ø·Ø¨ÙŠØ¹ÙŠ Ù„Ù„Ø±Ø­Ù„Ø© Ù„ÙƒØ´Ù Ø§Ù„ØªØ£Ø®ÙŠØ±.
+/// يحتوي كل طلب على:
+/// * [DeliveryOrder.id] معرف فريد للطلب لمزامنته لحظياً سحابياً.
+/// * [DeliveryOrder.orderNumber] رقم الطلب (نص حر لتنظيم الأوردرات).
+/// * [DeliveryOrder.amount] سعر الطلب بالدينار.
+/// * [DeliveryOrder.paymentType] نوع الدفع (كاش / ماستر كارد / استلام مباشر).
+/// * [DeliveryOrder.addedAt] وقت إضافة الطلب.
+/// * [DeliveryOrder.status] حالة الطلب (قيد الإعداد ➡️ مع السائق ➡️ تم التسليم).
+/// * [DeliveryOrder.driverPin] رمز السائق المسند إليه الطلب (1001 - 1030).
+/// * [DeliveryOrder.driverName] اسم السائق المسند إليه الطلب.
+/// * [DeliveryOrder.pickedUpAt] وقت الاستلام الفعلي من المطعم وبدء الطريق.
+/// * [DeliveryOrder.deliveredAt] وقت تسليم الطلب للزبون بالكامل.
+/// * [DeliveryOrder.expectedDurationMinutes] الوقت الطبيعي للرحلة لكشف التأخير.
 library;
 
 import 'package:orderly_worker_web/models/order_payment_type.dart';
 import 'package:orderly_worker_web/models/order_status.dart';
 
 class DeliveryOrder {
-  /// Ø¥Ù†Ø´Ø§Ø¡ Ø·Ù„Ø¨ Ø¬Ø¯ÙŠØ¯.
+  /// إنشاء طلب جديد.
   DeliveryOrder({
     String? id,
     this.orderNumber = '',
@@ -37,7 +37,7 @@ class DeliveryOrder {
             : 'ord_${(addedAt ?? DateTime.now()).microsecondsSinceEpoch}_${orderNumber.replaceAll(RegExp(r'\s+'), '')}',
         addedAt = addedAt ?? DateTime.now();
 
-  /// Ø¥Ù†Ø´Ø§Ø¡ Ø·Ù„Ø¨ Ù…Ù† Ø®Ø±ÙŠØ·Ø© (JSON) Ù…Ø³ØªØ±Ø¬ÙŽØ¹Ø© Ù…Ù† Ø§Ù„ØªØ®Ø²ÙŠÙ† Ø§Ù„Ù…Ø­Ù„ÙŠ Ø£Ùˆ Firebase.
+  /// إنشاء طلب من خريطة (JSON) مسترجَعة من التخزين المحلي أو Firebase.
   factory DeliveryOrder.fromJson(Map<String, dynamic> json) {
     final DateTime addedDate = _readDate(json[keyAddedAt]);
     final String ordNum = (json[keyOrderNumber] ?? '').toString().trim();
@@ -63,7 +63,7 @@ class DeliveryOrder {
     );
   }
 
-  /// Ù…ÙØ§ØªÙŠØ­ Ø§Ù„ØªØ®Ø²ÙŠÙ†/JSON.
+  /// مفاتيح التخزين/JSON.
   static const String keyId = 'id';
   static const String keyOrderNumber = 'orderNumber';
   static const String keyAmount = 'amount';
@@ -77,90 +77,90 @@ class DeliveryOrder {
   static const String keyExpectedDurationMinutes = 'expectedDurationMinutes';
   static const String keyProofImageData = 'proofImageData';
 
-  /// Ø§Ù„Ù…Ø¹Ø±Ù Ø§Ù„ÙØ±ÙŠØ¯ Ù„Ù„Ø·Ù„Ø¨.
+  /// المعرف الفريد للطلب.
   final String id;
 
-  /// Ø±Ù‚Ù… Ø§Ù„Ø·Ù„Ø¨ (Ù†Øµ Ø­Ø±: Ù‚Ø¯ ÙŠÙƒÙˆÙ† Ø±Ù‚Ù…Ø§Ù‹ Ø£Ùˆ Ø±Ù…Ø²Ø§Ù‹ Ù…Ø«Ù„ `#A12`).
+  /// رقم الطلب (نص حر: قد يكون رقماً أو رمزاً مثل `#A12`).
   final String orderNumber;
 
-  /// Ø³Ø¹Ø± Ø§Ù„Ø·Ù„Ø¨ Ø¨Ø§Ù„Ø¯ÙŠÙ†Ø§Ø±.
+  /// سعر الطلب بالدينار.
   final double amount;
 
-  /// Ù†ÙˆØ¹ Ø¯ÙØ¹ Ø§Ù„Ø·Ù„Ø¨ (Ø§ÙØªØ±Ø§Ø¶ÙŠØ§Ù‹ ÙƒØ§Ø´).
+  /// نوع دفع الطلب (افتراضياً كاش).
   final OrderPaymentType paymentType;
 
-  /// ÙˆÙ‚Øª Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ø·Ù„Ø¨ Ø¥Ù„Ù‰ Ø­Ø³Ø§Ø¨ Ø§Ù„Ø¹Ø§Ù…Ù„ Ø£Ùˆ Ø§Ù„Ù†Ø¸Ø§Ù….
+  /// وقت إضافة الطلب إلى حساب العامل أو النظام.
   final DateTime addedAt;
 
-  /// Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù„Ø¨ Ø§Ù„Ø­Ø§Ù„ÙŠØ© ÙÙŠ Ù…Ø³Ø§Ø± Ø§Ù„ØªÙˆØµÙŠÙ„.
+  /// حالة الطلب الحالية في مسار التوصيل.
   final OrderStatus status;
 
-  /// Ø±Ù…Ø² Ø§Ù„Ø³Ø§Ø¦Ù‚ Ø§Ù„Ù…Ø³Ù†Ø¯ Ø¥Ù„ÙŠÙ‡ Ø§Ù„Ø·Ù„Ø¨ (1001 Ø¥Ù„Ù‰ 1030).
+  /// رمز السائق المسند إليه الطلب (1001 إلى 1030).
   final String? driverPin;
 
-  /// Ø§Ø³Ù… Ø§Ù„Ø³Ø§Ø¦Ù‚ Ø§Ù„Ù…Ø³Ù†Ø¯ Ø¥Ù„ÙŠÙ‡ Ø§Ù„Ø·Ù„Ø¨.
+  /// اسم السائق المسند إليه الطلب.
   final String? driverName;
 
-  /// ÙˆÙ‚Øª Ø®Ø±ÙˆØ¬ Ø§Ù„Ø·Ù„Ø¨ ÙˆØ§Ø³ØªÙ„Ø§Ù…Ù‡ Ù…Ù† Ø§Ù„Ù…Ø·Ø¹Ù….
+  /// وقت خروج الطلب واستلامه من المطعم.
   final DateTime? pickedUpAt;
 
-  /// ÙˆÙ‚Øª ØªØ³Ù„ÙŠÙ… Ø§Ù„Ø·Ù„Ø¨ Ù„Ù„Ø²Ø¨ÙˆÙ†.
+  /// وقت تسليم الطلب للزبون.
   final DateTime? deliveredAt;
 
-  /// ÙˆÙ‚Øª Ø§Ù„Ø±Ø­Ù„Ø© Ø§Ù„Ø·Ø¨ÙŠØ¹ÙŠ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ Ø¨Ø§Ù„Ø¯Ù‚Ø§Ø¦Ù‚ (Ø§ÙØªØ±Ø§Ø¶ÙŠØ§Ù‹ 25 Ø¯Ù‚ÙŠÙ‚Ø©).
+  /// وقت الرحلة الطبيعي المتوقع بالدقائق (افتراضياً 25 دقيقة).
   final int expectedDurationMinutes;
 
-  /// ØµÙˆØ±Ø© Ø¥Ø«Ø¨Ø§Øª Ø§Ù„Ø·Ù„Ø¨ Ø¨ØµÙŠØºØ© Data URL Ù…Ø¶ØºÙˆØ·Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠØ©ØŒ Ù„Ù„ÙˆÙŠØ¨ ÙˆØ§Ù„Ù‡Ø§ØªÙ).
+  /// صورة إثبات الطلب بصيغة Data URL مضغوطة (اختيارية، للويب والهاتف).
   final String? proofImageData;
 
-  /// Ø±Ù‚Ù… Ø§Ù„Ø·Ù„Ø¨ Ù„Ù„Ø¹Ø±Ø¶ ÙÙŠ Ø§Ù„ÙˆØ§Ø¬Ù‡Ø© (Ø£Ùˆ Â«Ø¨Ø¯ÙˆÙ† Ø±Ù‚Ù…Â» Ø¥Ø°Ø§ ØªÙØ±Ùƒ Ø§Ù„Ø­Ù‚Ù„ ÙØ§Ø±ØºØ§Ù‹).
-  String get displayNumber => orderNumber.isEmpty ? 'Ø¨Ø¯ÙˆÙ† Ø±Ù‚Ù…' : orderNumber;
+  /// رقم الطلب للعرض في الواجهة (أو «بدون رقم» إذا تُرك الحقل فارغاً).
+  String get displayNumber => orderNumber.isEmpty ? 'بدون رقم' : orderNumber;
 
-  /// Ù†Øµ Ù†ÙˆØ¹ Ø§Ù„Ø¯ÙØ¹ Ù„Ù„Ø¹Ø±Ø¶ ÙÙŠ Ø§Ù„Ø³Ø¬Ù„ ÙˆØ§Ù„Ø´Ø§Ø±Ø§Øª.
+  /// نص نوع الدفع للعرض في السجل والشارات.
   String get displayPayment => paymentType.label;
 
-  /// Ù‡Ù„ ØªÙØ­ØªØ³Ø¨ Ø£Ø¬Ø±Ø© ØªÙˆØµÙŠÙ„ Ø¹Ù† Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ØŸ
+  /// هل تُحتسب أجرة توصيل عن هذا الطلب؟
   bool get countsWage => paymentType.countsWage;
 
-  /// Ù‡Ù„ ÙŠÙØ¹Ø¯Ù‘ Ø§Ù„Ø·Ù„Ø¨ Ø­Ø§Ù„Ø© Ø®Ø§ØµØ© Ø¨Ø£Ø¬Ø±Ø© ØµÙØ±ØŸ
+  /// هل يُعدّ الطلب حالة خاصة بأجرة صفر؟
   bool get hasZeroWage => paymentType.isSpecialCase;
 
-  /// Ù‡Ù„ ÙŠØ­Ù…Ù„ Ø§Ù„Ø¹Ø§Ù…Ù„ Ù…Ø¨Ù„Øº Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ Ù†Ù‚Ø¯Ø§Ù‹ (ÙƒØ§Ø´)ØŸ
+  /// هل يحمل العامل مبلغ هذا الطلب نقداً (كاش)؟
   bool get collectsCash => paymentType.collectsCash;
 
-  /// Ù…Ø¯Ø© Ø§Ù„Ø±Ø­Ù„Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø·Ø±ÙŠÙ‚ (Ù…Ù†Ø° Ù„Ø­Ø¸Ø© Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ù…Ù† Ø§Ù„Ù…Ø·Ø¹Ù…).
+  /// مدة الرحلة على الطريق (منذ لحظة الاستلام من المطعم).
   Duration? get duration {
     if (pickedUpAt == null) return null;
     final DateTime end = deliveredAt ?? DateTime.now();
     return end.difference(pickedUpAt!);
   }
 
-  /// Ù…Ø¯Ø© Ø§Ù„Ø±Ø­Ù„Ø© Ø¨Ø§Ù„Ø¯Ù‚Ø§Ø¦Ù‚ (Ø£Ùˆ 0 Ø¥Ø°Ø§ Ù„Ù… ÙŠÙØ³ØªÙ„Ù… Ø¨Ø¹Ø¯).
+  /// مدة الرحلة بالدقائق (أو 0 إذا لم يُستلم بعد).
   int get durationMinutes => duration?.inMinutes ?? 0;
 
-  /// Ù†Øµ Ù…Ù†Ø³Ù‚ Ù„Ù…Ø¯Ø© Ø§Ù„Ø±Ø­Ù„Ø© Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©: Ù…Ø«Ø§Ù„ Â«18 Ø¯Ù‚ÙŠÙ‚Ø©Â».
+  /// نص منسق لمدة الرحلة بالعربية: مثال «18 دقيقة».
   String get durationFormatted {
     final Duration? d = duration;
-    if (d == null) return 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…';
+    if (d == null) return 'بانتظار الاستلام';
     final int mins = d.inMinutes;
     final int secs = d.inSeconds % 60;
-    if (mins == 0) return '$secs Ø«Ø§Ù†ÙŠØ©';
-    return '$mins Ø¯Ù‚ÙŠÙ‚Ø©';
+    if (mins == 0) return '$secs ثانية';
+    return '$mins دقيقة';
   }
 
-  /// Ù‡Ù„ ØªØ¬Ø§ÙˆØ² Ø§Ù„Ø·Ù„Ø¨ Ø§Ù„ÙˆÙ‚Øª Ø§Ù„Ø·Ø¨ÙŠØ¹ÙŠ Ù„Ù„Ø·Ø±ÙŠÙ‚ (Ù…ØªØ£Ø®Ø±)ØŸ
+  /// هل تجاوز الطلب الوقت الطبيعي للطريق (متأخر)؟
   bool get isDelayed {
     if (pickedUpAt == null) return false;
     return durationMinutes > expectedDurationMinutes;
   }
 
-  /// Ø¹Ø¯Ø¯ Ø§Ù„Ø¯Ù‚Ø§Ø¦Ù‚ Ø§Ù„Ø¥Ø¶Ø§ÙÙŠØ© Ø§Ù„Ù…ØªØ£Ø®Ø±Ø© Ø¹Ù† Ø§Ù„ÙˆÙ‚Øª Ø§Ù„Ù…Ø¹ØªØ§Ø¯ Ù„Ù„Ø·Ø±ÙŠÙ‚.
+  /// عدد الدقائق الإضافية المتأخرة عن الوقت المعتاد للطريق.
   int get delayMinutes {
     if (!isDelayed) return 0;
     return durationMinutes - expectedDurationMinutes;
   }
 
-  /// Ù†Ø³Ø®Ø© Ø¬Ø¯ÙŠØ¯Ø© Ù…Ù† Ø§Ù„Ø·Ù„Ø¨ Ù…Ø¹ ØªØ¹Ø¯ÙŠÙ„ Ø¨Ø¹Ø¶ Ø§Ù„Ù‚ÙŠÙ….
+  /// نسخة جديدة من الطلب مع تعديل بعض القيم.
   DeliveryOrder copyWith({
     String? id,
     String? orderNumber,
@@ -191,7 +191,7 @@ class DeliveryOrder {
         proofImageData: proofImageData ?? this.proofImageData,
       );
 
-  /// ØªØ­ÙˆÙŠÙ„ Ø§Ù„Ø·Ù„Ø¨ Ø¥Ù„Ù‰ Ø®Ø±ÙŠØ·Ø© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªØ®Ø²ÙŠÙ† Ø¨ØµÙŠØºØ© JSON Ø£Ùˆ Ø§Ù„Ø¥Ø±Ø³Ø§Ù„ Ø¥Ù„Ù‰ Firebase.
+  /// تحويل الطلب إلى خريطة قابلة للتخزين بصيغة JSON أو الإرسال إلى Firebase.
   Map<String, dynamic> toJson() => <String, dynamic>{
         keyId: id,
         keyOrderNumber: orderNumber,
@@ -208,7 +208,7 @@ class DeliveryOrder {
           keyProofImageData: proofImageData,
       };
 
-  /// Ù‚Ø±Ø§Ø¡Ø© Ù‚ÙŠÙ…Ø© Ø¹Ø´Ø±ÙŠØ© Ù…Ù† JSON Ø¨Ø£Ù…Ø§Ù†.
+  /// قراءة قيمة عشرية من JSON بأمان.
   static double _readDouble(Object? value) {
     if (value is double) return value;
     if (value is num) return value.toDouble();
@@ -216,7 +216,7 @@ class DeliveryOrder {
     return double.tryParse(value.toString().replaceAll(',', '').trim()) ?? 0;
   }
 
-  /// Ù‚Ø±Ø§Ø¡Ø© Ù‚ÙŠÙ…Ø© ØµØ­ÙŠØ­Ø© Ù…Ù† JSON Ø¨Ø£Ù…Ø§Ù†.
+  /// قراءة قيمة صحيحة من JSON بأمان.
   static int _readInt(Object? value, {int fallback = 0}) {
     if (value is int) return value;
     if (value is num) return value.round();
@@ -224,7 +224,7 @@ class DeliveryOrder {
     return int.tryParse(value.toString().replaceAll(',', '').trim()) ?? fallback;
   }
 
-  /// Ù‚Ø±Ø§Ø¡Ø© ÙˆÙ‚Øª Ø§Ù„Ø¥Ø¶Ø§ÙØ© Ù…Ù† JSON Ø¨Ø£Ù…Ø§Ù† (Ù†Øµ ISO Ø£Ùˆ Ø¹Ø¯Ø¯ Ù…ÙŠÙ„ÙŠ Ø«Ø§Ù†ÙŠØ©).
+  /// قراءة وقت الإضافة من JSON بأمان (نص ISO أو عدد ميلي ثانية).
   static DateTime _readDate(Object? value) {
     if (value is DateTime) return value;
     if (value is num) return DateTime.fromMillisecondsSinceEpoch(value.round());

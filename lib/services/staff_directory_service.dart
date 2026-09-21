@@ -1,18 +1,18 @@
-/// Ø®Ø¯Ù…Ø© Ø¯Ù„ÙŠÙ„ Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ù…ÙˆØ¸ÙÙŠÙ† (Ø§Ù„Ø¹Ù…Ø§Ù„ ÙˆØ§Ù„Ù…Ø¯Ø±Ø§Ø¡) Ù…Ø¹Ø²ÙˆÙ„Ø© Ø¨Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù….
+/// خدمة دليل حسابات الموظفين (العمال والمدراء) معزولة بمعرّف المطعم.
 ///
-/// **Ù‡ÙŠÙƒÙ„ Ø§Ù„ØªØ®Ø²ÙŠÙ† (Ù…Ø­Ù„ÙŠØ§Ù‹ ÙˆØ³Ø­Ø§Ø¨ÙŠØ§Ù‹ Ø¨Ù†ÙØ³ Ø§Ù„Ù…Ø³Ø§Ø±Ø§Øª):**
+/// **هيكل التخزين (محلياً وسحابياً بنفس المسارات):**
 /// ```
-/// restaurants/{restaurant_id}/staff/{staff_id}   â† ÙÙŠ Firebase Realtime DB
-/// orderly.staff_directory â†’ { "<rid>": { "<staffId>": {...} } }  â† Ù…Ø­Ù„ÙŠØ§Ù‹
+/// restaurants/{restaurant_id}/staff/{staff_id}   ← في Firebase Realtime DB
+/// orderly.staff_directory → { "<rid>": { "<staffId>": {...} } }  ← محلياً
 /// ```
 ///
-/// **Ø¶Ù…Ø§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù…:**
-/// 1. ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ ÙŠØªØ·Ù„Ø¨ (Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù… + Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… + ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø£Ùˆ PIN).
-/// 2. ÙŠÙØ³Ù…Ø­ Ø¨ØªØ´Ø§Ø¨Ù‡ Ø§Ù„Ø£Ø³Ù…Ø§Ø¡ ÙˆÙƒÙ„Ù…Ø§Øª Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ø§ÙØªØ±Ø§Ø¶ÙŠØ© Ø¨ÙŠÙ† Ù…Ø·Ø¹Ù…ÙŠÙ† Ù…Ø®ØªÙ„ÙÙŠÙ†ØŒ
-///    Ù„Ø£Ù† Ø§Ù„Ø¨Ø­Ø« ÙŠÙ‚ØªØµØ± Ø­ØµØ±Ø§Ù‹ Ø¹Ù„Ù‰ Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ù…ÙˆØ¬ÙˆØ¯Ø© ØªØ­Øª Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù… Ø§Ù„Ù…Ø¯Ø®Ù„.
-/// 3. ÙƒÙ„Ù…Ø§Øª Ø§Ù„Ù…Ø±ÙˆØ± Ù„Ø§ ØªÙØ®Ø²ÙŽÙ‘Ù† Ù†ØµØ§Ù‹ Ø£Ø¨Ø¯Ø§Ù‹ â€” Ø¨ØµÙ…Ø© SHA-256 Ù…Ø¹ Ù…Ù„Ø­ Ø¹Ø´ÙˆØ§Ø¦ÙŠ.
-/// 4. ØªØ²ÙˆÙŠØ¯ ØªÙ„Ù‚Ø§Ø¦ÙŠ: Ø­Ø³Ø§Ø¨ Ù…Ø¯ÙŠØ± (Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… `manager` ÙˆÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± = Ø±Ù…Ø²
-///    Ø§Ù„Ù…Ø¯ÙŠØ± Ø§Ù„Ø­Ø§Ù„ÙŠ) ÙˆØ­Ø³Ø§Ø¨ Ø¹Ø§Ù…Ù„ Ù„ÙƒÙ„ Ø³Ø§Ø¦Ù‚ (ÙƒÙ„Ù…Ø© Ù…Ø±ÙˆØ± Ø§ÙØªØ±Ø§Ø¶ÙŠØ© `1234`).
+/// **ضمانات النظام:**
+/// 1. تسجيل الدخول يتطلب (معرّف المطعم + اسم المستخدم + كلمة المرور أو PIN).
+/// 2. يُسمح بتشابه الأسماء وكلمات المرور الافتراضية بين مطعمين مختلفين،
+///    لأن البحث يقتصر حصراً على الحسابات الموجودة تحت معرّف المطعم المدخل.
+/// 3. كلمات المرور لا تُخزَّن نصاً أبداً — بصمة SHA-256 مع ملح عشوائي.
+/// 4. تزويد تلقائي: حساب مدير (اسم المستخدم `manager` وكلمة المرور = رمز
+///    المدير الحالي) وحساب عامل لكل سائق (كلمة مرور افتراضية `1234`).
 library;
 
 import 'dart:convert';
@@ -26,7 +26,7 @@ import 'package:orderly_worker_web/models/staff_member.dart';
 import 'package:orderly_worker_web/services/app_settings.dart';
 import 'package:orderly_worker_web/services/driver_storage.dart';
 
-/// Ù†ØªÙŠØ¬Ø© Ù…Ø­Ø§ÙˆÙ„Ø© Ù…ØµØ§Ø¯Ù‚Ø©/ØªØ³Ø¬ÙŠÙ„ Ø­Ø³Ø§Ø¨ Ù…ÙˆØ¸Ù.
+/// نتيجة محاولة مصادقة/تسجيل حساب موظف.
 class StaffAuthResult {
   const StaffAuthResult({required this.success, this.staff, this.message});
 
@@ -44,45 +44,45 @@ class StaffAuthResult {
 class StaffDirectoryService {
   const StaffDirectoryService._();
 
-  /// Ù…ÙØªØ§Ø­ Ø§Ù„Ø¯Ù„ÙŠÙ„ Ø§Ù„Ù…Ø­Ù„ÙŠ ÙÙŠ SharedPreferences (Ù…Ù‚Ø³Ù‘Ù… Ø­Ø³Ø¨ Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù…).
+  /// مفتاح الدليل المحلي في SharedPreferences (مقسّم حسب معرّف المطعم).
   static const String directoryKey = 'orderly.staff_directory';
 
-  /// Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø§ÙØªØ±Ø§Ø¶ÙŠ Ù„Ø­Ø³Ø§Ø¨ Ø§Ù„Ù…Ø¯ÙŠØ±.
+  /// اسم المستخدم الافتراضي لحساب المدير.
   static const String defaultManagerUsername = 'manager';
 
-  /// Ø§Ù„Ø§Ø³Ù… Ø§Ù„Ù…Ø¹Ø±ÙˆØ¶ Ù„Ø­Ø³Ø§Ø¨ Ø§Ù„Ù…Ø¯ÙŠØ± Ø§Ù„Ø§ÙØªØ±Ø§Ø¶ÙŠ.
-  static const String defaultManagerName = 'Ù…Ø¯ÙŠØ± Ø§Ù„Ù…Ø·Ø¹Ù…';
+  /// الاسم المعروض لحساب المدير الافتراضي.
+  static const String defaultManagerName = 'مدير المطعم';
 
-  /// ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ø§ÙØªØ±Ø§Ø¶ÙŠØ© Ù„Ù„Ø¹Ù…Ø§Ù„ Ø¹Ù†Ø¯ Ø§Ù„ØªØ²ÙˆÙŠØ¯ Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠ.
-  /// ØªØªØ·Ø§Ø¨Ù‚ Ø¹Ø§Ø¯Ø©Ù‹ Ø¨ÙŠÙ† Ø§Ù„Ù…Ø·Ø§Ø¹Ù… Ø§Ù„Ù…Ø®ØªÙ„ÙØ© â€” ÙˆÙ‡Ø°Ø§ Ù…Ù‚ØµÙˆØ¯ ÙˆØ¢Ù…Ù† Ù„Ø£Ù† Ø§Ù„Ø¨Ø­Ø«
-  /// Ù…Ø±ØªØ¨Ø· Ø­ØµØ±Ø§Ù‹ Ø¨Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù… Ø§Ù„Ù…Ø¯Ø®Ù„ Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.
+  /// كلمة المرور الافتراضية للعمال عند التزويد التلقائي.
+  /// تتطابق عادةً بين المطاعم المختلفة — وهذا مقصود وآمن لأن البحث
+  /// مرتبط حصراً بمعرّف المطعم المدخل عند تسجيل الدخول.
   static const String defaultWorkerPassword = '1234';
 
-  /// Ø±Ø§Ø¨Ø· Ù‚Ø§Ø¹Ø¯Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ø®ØªÙŠØ§Ø±ÙŠ ÙŠÙØ®Ø¨ÙŽØ² ÙÙŠ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ Ø¹Ù†Ø¯ Ø§Ù„Ø¨Ù†Ø§Ø¡ (Ù„Ù„Ù…ÙˆØ²Ù‘Ø¹ SaaS).
-  /// ÙŠÙØ³ØªØ®Ø¯Ù… ÙÙ‚Ø· Ø¥Ø°Ø§ Ù„Ù… ÙŠÙØ¯Ø®Ù„ Ø§Ù„Ù…Ø¯ÙŠØ± Ø±Ø§Ø¨Ø·Ø§Ù‹ ÙÙŠ Ø´Ø§Ø´Ø© Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª.
-  /// Ø§ØªØ±ÙƒÙ‡ ÙØ§Ø±ØºØ§Ù‹ Ù„ØªØ¹ØªÙ…Ø¯ Ø§Ù„Ø®Ø¯Ù…Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø±Ø§Ø¨Ø· Ø§Ù„Ù…ÙØ¯Ø®Ù„ ÙÙŠ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª ÙÙ‚Ø·.
+  /// رابط قاعدة بيانات اختياري يُخبَز في التطبيق عند البناء (للموزّع SaaS).
+  /// يُستخدم فقط إذا لم يُدخل المدير رابطاً في شاشة الإعدادات.
+  /// اتركه فارغاً لتعتمد الخدمة على الرابط المُدخل في الإعدادات فقط.
   static const String defaultDatabaseUrl = '';
 
   static Future<SharedPreferences> get _prefs =>
       SharedPreferences.getInstance();
 
-  /// Ù…Ø³Ø§Ø± Ø§Ù„Ø­Ø³Ø§Ø¨ Ø¯Ø§Ø®Ù„ Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª (Ù„Ù„Ø¹Ø±Ø¶ ÙˆØ§Ù„ØªÙˆØ«ÙŠÙ‚).
+  /// مسار الحساب داخل قاعدة البيانات (للعرض والتوثيق).
   static String staffPath(String restaurantId, String staffId) =>
       'restaurants/${_normalizeRid(restaurantId)}/staff/$staffId';
 
   static String _normalizeRid(String raw) =>
       StaffMember.normalizeRestaurantId(raw);
 
-  /// Ù‚Ø±Ø§Ø¡Ø© Ø±Ø§Ø¨Ø· Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª (Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø£ÙˆÙ„Ø§Ù‹ Ø«Ù… Ø§Ù„Ø±Ø§Ø¨Ø· Ø§Ù„Ù…Ø®Ø¨ÙˆØ²).
+  /// قراءة رابط قاعدة البيانات (الإعدادات أولاً ثم الرابط المخبوز).
   static Future<String> resolveDatabaseUrl() async {
     final String configured = await AppSettings.getFirebaseDatabaseUrl();
     if (configured.isNotEmpty) return configured;
     return defaultDatabaseUrl;
   }
 
-  // â”€â”€â”€ Ø§Ù„Ø¯Ù„ÙŠÙ„ Ø§Ù„Ù…Ø­Ù„ÙŠ (Ù…Ù‚Ø³Ù‘Ù… Ø­Ø³Ø¨ Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù…) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ─── الدليل المحلي (مقسّم حسب معرّف المطعم) ───────────────────────────────
 
-  /// Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„Ø¯Ù„ÙŠÙ„ Ø§Ù„ÙƒØ§Ù…Ù„: { Ù…Ø¹Ø±Ù_Ø§Ù„Ù…Ø·Ø¹Ù…: { Ù…Ø¹Ø±Ù_Ø§Ù„Ø­Ø³Ø§Ø¨: Ø¨ÙŠØ§Ù†Ø§Øª } }.
+  /// قراءة الدليل الكامل: { معرف_المطعم: { معرف_الحساب: بيانات } }.
   static Future<Map<String, Map<String, Map<String, dynamic>>>> _loadAll() async {
     final SharedPreferences prefs = await _prefs;
     final String? raw = prefs.getString(directoryKey);
@@ -116,7 +116,7 @@ class StaffDirectoryService {
     }
   }
 
-  /// Ø­ÙØ¸ Ø§Ù„Ø¯Ù„ÙŠÙ„ Ø§Ù„ÙƒØ§Ù…Ù„ Ù…Ø­Ù„ÙŠØ§Ù‹.
+  /// حفظ الدليل الكامل محلياً.
   static Future<void> _saveAll(
     Map<String, Map<String, Map<String, dynamic>>> all,
   ) async {
@@ -128,7 +128,7 @@ class StaffDirectoryService {
     await prefs.setString(directoryKey, jsonEncode(all));
   }
 
-  /// ØªØ­Ù…ÙŠÙ„ Ø­Ø³Ø§Ø¨Ø§Øª Ù…ÙˆØ¸ÙÙŠ Ù…Ø·Ø¹Ù… Ù…Ø­Ø¯Ø¯ ÙÙ‚Ø· (Ø¹Ø²Ù„ ØªØ§Ù… Ø¨ÙŠÙ† Ø§Ù„Ù…Ø·Ø§Ø¹Ù…).
+  /// تحميل حسابات موظفي مطعم محدد فقط (عزل تام بين المطاعم).
   static Future<List<StaffMember>> loadStaff(String restaurantId) async {
     final String rid = _normalizeRid(restaurantId);
     if (rid.isEmpty) return <StaffMember>[];
@@ -146,7 +146,7 @@ class StaffDirectoryService {
     return staff;
   }
 
-  /// Ø­ÙØ¸ (Ø¥Ø¶Ø§ÙØ©/ØªØ­Ø¯ÙŠØ«) Ø­Ø³Ø§Ø¨Ø§Øª Ù„Ù…Ø·Ø¹Ù… Ù…Ø­Ø¯Ø¯ Ù…Ø¹ Ø¯ÙØ¹Ù‡Ø§ Ø³Ø­Ø§Ø¨ÙŠØ§Ù‹ Ø§Ø®ØªÙŠØ§Ø±ÙŠØ§Ù‹.
+  /// حفظ (إضافة/تحديث) حسابات لمطعم محدد مع دفعها سحابياً اختيارياً.
   static Future<void> saveStaff(
     String restaurantId,
     List<StaffMember> staff, {
@@ -169,7 +169,7 @@ class StaffDirectoryService {
     }
   }
 
-  /// Ø§Ù„Ø¨Ø­Ø« Ø¹Ù† Ø­Ø³Ø§Ø¨ Ø¨Ø§Ù„Ù…Ø¹Ø±Ù Ø¯Ø§Ø®Ù„ Ù…Ø·Ø¹Ù… Ù…Ø­Ø¯Ø¯.
+  /// البحث عن حساب بالمعرف داخل مطعم محدد.
   static Future<StaffMember?> findById(
     String restaurantId,
     String staffId,
@@ -181,7 +181,7 @@ class StaffDirectoryService {
     return null;
   }
 
-  /// Ø§Ù„Ø¨Ø­Ø« Ø¹Ù† Ø­Ø³Ø§Ø¨ Ø¨Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… (Ø£Ùˆ Ø§Ù„Ø§Ø³Ù… Ø§Ù„Ù…Ø¹Ø±ÙˆØ¶) Ø¯Ø§Ø®Ù„ Ù…Ø·Ø¹Ù… Ù…Ø­Ø¯Ø¯ ÙÙ‚Ø·.
+  /// البحث عن حساب باسم المستخدم (أو الاسم المعروض) داخل مطعم محدد فقط.
   static Future<StaffMember?> findByUsername(
     String restaurantId,
     String usernameOrName,
@@ -200,13 +200,13 @@ class StaffDirectoryService {
 
 
 
-  // â”€â”€â”€ Ø§Ù„ØªØ³Ø¬ÙŠÙ„ ÙˆØªØºÙŠÙŠØ± ÙƒÙ„Ù…Ø§Øª Ø§Ù„Ù…Ø±ÙˆØ± â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ─── التسجيل وتغيير كلمات المرور ──────────────────────────────────────────
 
-  /// ØªØ³Ø¬ÙŠÙ„ Ø­Ø³Ø§Ø¨ Ù…ÙˆØ¸Ù Ø¬Ø¯ÙŠØ¯ Ø¯Ø§Ø®Ù„ Ù…Ø·Ø¹Ù… Ù…Ø­Ø¯Ø¯.
+  /// تسجيل حساب موظف جديد داخل مطعم محدد.
   ///
-  /// * Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙØ±ÙŠØ¯ **Ø¯Ø§Ø®Ù„ Ø§Ù„Ù…Ø·Ø¹Ù… Ø§Ù„ÙˆØ§Ø­Ø¯ ÙÙ‚Ø·** â€” Ù„Ø§ Ù…Ø§Ù†Ø¹ Ù…Ù† ØªÙƒØ±Ø§Ø±Ù‡
-  ///   ÙÙŠ Ù…Ø·Ø¹Ù… Ø¢Ø®Ø± (Ø§Ù„Ù…Ø¹Ø±Ù‘ÙØ§Ù† Ù…Ø®ØªÙ„ÙØ§Ù† â†’ Ù…Ø³Ø§Ø±Ø§Ù† Ù…Ø®ØªÙ„ÙØ§Ù† ØªÙ…Ø§Ù…Ø§Ù‹).
-  /// * ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ØªÙØ®Ø²ÙŽÙ‘Ù† Ø¨ØµÙ…Ø© Ù…Ø´ÙØ±Ø© ÙÙ‚Ø·.
+  /// * اسم المستخدم فريد **داخل المطعم الواحد فقط** — لا مانع من تكراره
+  ///   في مطعم آخر (المعرّفان مختلفان → مساران مختلفان تماماً).
+  /// * كلمة المرور تُخزَّن بصمة مشفرة فقط.
   static Future<StaffAuthResult> registerStaff({
     required String restaurantId,
     required String name,
@@ -223,23 +223,23 @@ class StaffDirectoryService {
     final String secret = password.trim();
 
     if (rid.isEmpty) {
-      return StaffAuthResult.failure('Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù… Ù…Ø·Ù„ÙˆØ¨ Ù„Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨.');
+      return StaffAuthResult.failure('معرّف المطعم مطلوب لإنشاء الحساب.');
     }
     if (displayName.isEmpty) {
-      return StaffAuthResult.failure('ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ø³Ù… Ø§Ù„Ù…ÙˆØ¸Ù.');
+      return StaffAuthResult.failure('يرجى إدخال اسم الموظف.');
     }
     if (uname.isEmpty) {
-      return StaffAuthResult.failure('ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù….');
+      return StaffAuthResult.failure('يرجى إدخال اسم المستخدم.');
     }
     if (secret.length < 4) {
       return StaffAuthResult.failure(
-          'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ÙŠØ¬Ø¨ Ø£Ù† ØªØªÙƒÙˆÙ† Ù…Ù† 4 Ø®Ø§Ù†Ø§Øª Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„.');
+          'كلمة المرور يجب أن تتكون من 4 خانات على الأقل.');
     }
 
     final StaffMember? existing = await findByUsername(rid, uname);
     if (existing != null) {
       return StaffAuthResult.failure(
-          'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Â«$unameÂ» Ù…Ø³ØªØ®Ø¯Ù… Ø¨Ø§Ù„ÙØ¹Ù„ Ø¯Ø§Ø®Ù„ Ù‡Ø°Ø§ Ø§Ù„Ù…Ø·Ø¹Ù….');
+          'اسم المستخدم «$uname» مستخدم بالفعل داخل هذا المطعم.');
     }
 
     final StaffMember member = StaffMember(
@@ -259,7 +259,7 @@ class StaffDirectoryService {
     return StaffAuthResult.success(member);
   }
 
-  /// ØªØ¹ÙŠÙŠÙ† ÙƒÙ„Ù…Ø© Ù…Ø±ÙˆØ± Ø¬Ø¯ÙŠØ¯Ø© Ù„Ø­Ø³Ø§Ø¨ (ÙŠØ­ÙˆÙ‘Ù„Ù‡ Ù„Ø­Ø³Ø§Ø¨ Ù…ÙØ¯Ø§Ø± ÙŠØ¯ÙˆÙŠØ§Ù‹).
+  /// تعيين كلمة مرور جديدة لحساب (يحوّله لحساب مُدار يدوياً).
   static Future<StaffAuthResult> setPassword(
     String restaurantId,
     String staffId,
@@ -269,15 +269,15 @@ class StaffDirectoryService {
     final String rid = _normalizeRid(restaurantId);
     final String secret = newPassword.trim();
     if (rid.isEmpty) {
-      return StaffAuthResult.failure('Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù… Ù…Ø·Ù„ÙˆØ¨.');
+      return StaffAuthResult.failure('معرّف المطعم مطلوب.');
     }
     if (secret.length < 4) {
       return StaffAuthResult.failure(
-          'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ÙŠØ¬Ø¨ Ø£Ù† ØªØªÙƒÙˆÙ† Ù…Ù† 4 Ø®Ø§Ù†Ø§Øª Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„.');
+          'كلمة المرور يجب أن تتكون من 4 خانات على الأقل.');
     }
     final StaffMember? existing = await findById(rid, staffId);
     if (existing == null) {
-      return StaffAuthResult.failure('Ø§Ù„Ø­Ø³Ø§Ø¨ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯ Ù„Ù‡Ø°Ø§ Ø§Ù„Ù…Ø·Ø¹Ù….');
+      return StaffAuthResult.failure('الحساب غير موجود لهذا المطعم.');
     }
     StaffMember updated = existing
         .withNewPassword(secret)
@@ -286,21 +286,21 @@ class StaffDirectoryService {
       updated = updated.copyWith(pin: newPin.trim());
     }
     await saveStaff(rid, <StaffMember>[updated]);
-    return StaffAuthResult.success(updated, 'ØªÙ… ØªØ­Ø¯ÙŠØ« ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø¨Ù†Ø¬Ø§Ø­.');
+    return StaffAuthResult.success(updated, 'تم تحديث كلمة المرور بنجاح.');
   }
 
-  // â”€â”€â”€ Ø§Ù„ØªØ²ÙˆÙŠØ¯ Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠ (Manager + Workers) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ─── التزويد التلقائي (Manager + Workers) ─────────────────────────────────
 
-  /// Ø¶Ù…Ø§Ù† Ø¬Ø§Ù‡Ø²ÙŠØ© Ø­Ø³Ø§Ø¨Ø§Øª ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù…Ø·Ø¹Ù… Ù…Ø­Ø¯Ø¯:
-  /// 1. Ø­Ø³Ø§Ø¨ Ø§Ù„Ù…Ø¯ÙŠØ±: Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… [defaultManagerUsername] ÙˆÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± =
-  ///    Ø±Ù…Ø² Ø§Ù„Ù…Ø¯ÙŠØ± Ø§Ù„Ø­Ø§Ù„ÙŠ (ÙŠØªØ²Ø§Ù…Ù† ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ø¹Ù†Ø¯ ØªØºÙŠÙŠØ± Ø§Ù„Ø±Ù…Ø² ÙÙŠ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª).
-  /// 2. Ø­Ø³Ø§Ø¨ Ø¹Ø§Ù…Ù„ Ù„ÙƒÙ„ Ø³Ø§Ø¦Ù‚: Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… = Ø§Ø³Ù… Ø§Ù„Ø³Ø§Ø¦Ù‚ØŒ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ø§ÙØªØ±Ø§Ø¶ÙŠØ©
-  ///    [defaultWorkerPassword]ØŒ ÙˆØ±Ù…Ø² PIN = Ø±Ù…Ø² Ø§Ù„Ø³Ø§Ø¦Ù‚ (1001-1030).
-  /// 3. Ø­Ø°Ù Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠØ© Ù„Ø¹Ù…Ø§Ù„ Ø­ÙØ°ÙÙˆØ§ Ù…Ù† Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©.
-  /// 4. Ø¯ÙØ¹ ÙƒÙ„ Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª Ø³Ø­Ø§Ø¨ÙŠØ§Ù‹ Ø¹Ù†Ø¯ ØªÙˆÙØ± Ø±Ø§Ø¨Ø· Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª.
+  /// ضمان جاهزية حسابات تسجيل الدخول لمطعم محدد:
+  /// 1. حساب المدير: اسم المستخدم [defaultManagerUsername] وكلمة المرور =
+  ///    رمز المدير الحالي (يتزامن تلقائياً عند تغيير الرمز في الإعدادات).
+  /// 2. حساب عامل لكل سائق: اسم المستخدم = اسم السائق، كلمة المرور الافتراضية
+  ///    [defaultWorkerPassword]، ورمز PIN = رمز السائق (1001-1030).
+  /// 3. حذف الحسابات التلقائية لعمال حُذفوا من القائمة.
+  /// 4. دفع كل التغييرات سحابياً عند توفر رابط قاعدة البيانات.
   ///
-  /// Ø§Ù„Ø¯Ø§Ù„Ø© idempotent (Ø¢Ù…Ù†Ø© Ù„Ù„Ø§Ø³ØªØ¯Ø¹Ø§Ø¡ Ø§Ù„Ù…ØªÙƒØ±Ø±) ÙˆÙ„Ø§ ØªÙ„Ù…Ø³ Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ù…ÙØ¯Ø§Ø±Ø©
-  /// ÙŠØ¯ÙˆÙŠØ§Ù‹ (autoProvisioned = false).
+  /// الدالة idempotent (آمنة للاستدعاء المتكرر) ولا تلمس الحسابات المُدارة
+  /// يدوياً (autoProvisioned = false).
   static Future<void> ensureProvisioned(String restaurantId) async {
     final String rid = _normalizeRid(restaurantId);
     if (rid.isEmpty) return;
@@ -313,7 +313,7 @@ class StaffDirectoryService {
       bool changed = false;
       final int now = DateTime.now().millisecondsSinceEpoch;
 
-      // â‘  Ø­Ø³Ø§Ø¨ Ø§Ù„Ù…Ø¯ÙŠØ± â€” ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ØªØªØ¨Ø¹ Ø±Ù…Ø² Ø§Ù„Ù…Ø¯ÙŠØ± Ø§Ù„Ø­Ø§Ù„ÙŠ.
+      // ① حساب المدير — كلمة المرور تتبع رمز المدير الحالي.
       final String adminPin = await AppSettings.getAdminPin();
       final String managerId =
           StaffMember.buildStaffId(rid, defaultManagerUsername);
@@ -339,7 +339,7 @@ class StaffDirectoryService {
         changed = true;
       }
 
-      // â‘¡ Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ø¹Ù…Ø§Ù„ Ù…Ù† Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø³Ø§Ø¦Ù‚ÙŠÙ† Ø§Ù„Ø­Ø§Ù„ÙŠØ©.
+      // ② حسابات العمال من قائمة السائقين الحالية.
       final List<Driver> drivers = await DriverStorage.loadDrivers();
       final Set<String> activeWorkerKeys = <String>{};
       for (final Driver driver in drivers) {
@@ -372,7 +372,7 @@ class StaffDirectoryService {
         }
       }
 
-      // â‘¢ Ø­Ø°Ù Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ø¹Ù…Ø§Ù„ Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠØ© Ø§Ù„ØªÙŠ Ø­ÙØ°Ù Ø¹Ø§Ù…Ù„Ù‡Ø§ Ù…Ù† Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©.
+      // ③ حذف حسابات العمال التلقائية التي حُذف عاملها من القائمة.
       final List<String> orphanIds = <String>[];
       bucket.forEach((String id, Map<String, dynamic> json) {
         if (json.isEmpty) return;
@@ -399,11 +399,11 @@ class StaffDirectoryService {
         }
       }
     } catch (e) {
-      debugPrint('[StaffDirectory] ensureProvisioned Ø®Ø·Ø£: $e');
+      debugPrint('[StaffDirectory] ensureProvisioned خطأ: $e');
     }
   }
 
-  /// ØªØ­ÙˆÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§Øª Ø®Ø§Ù… Ø¥Ù„Ù‰ Ø­Ø³Ø§Ø¨ Ø¨Ø£Ù…Ø§Ù† (ÙŠØ±Ø¬Ø¹ null Ø¥Ø°Ø§ ÙƒØ§Ù†Øª ÙØ§Ø±ØºØ©/ØªØ§Ù„ÙØ©).
+  /// تحويل بيانات خام إلى حساب بأمان (يرجع null إذا كانت فارغة/تالفة).
   static StaffMember? _memberFromRaw(Object? raw) {
     if (raw is! Map || (raw as Map<Object?, Object?>).isEmpty) return null;
     try {
@@ -415,17 +415,17 @@ class StaffDirectoryService {
     }
   }
 
-  // â”€â”€â”€ Ø§Ù„Ù…ØµØ§Ø¯Ù‚Ø© (ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ─── المصادقة (تسجيل الدخول) ──────────────────────────────────────────────
 
-  /// Ù…ØµØ§Ø¯Ù‚Ø© Ù…ÙˆØ¸Ù: (Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù… + Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… + ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø£Ùˆ PIN).
+  /// مصادقة موظف: (معرّف المطعم + اسم المستخدم + كلمة المرور أو PIN).
   ///
-  /// **Ø¢Ù„ÙŠØ© Ø§Ù„Ø¹Ø²Ù„:** Ø§Ù„Ø¨Ø­Ø« ÙŠÙ‚ØªØµØ± Ø­ØµØ±Ø§Ù‹ Ø¹Ù„Ù‰ Ø§Ù„Ø¯Ù„ÙŠÙ„ Ø§Ù„ÙØ±Ø¹ÙŠ Ø§Ù„Ø®Ø§Øµ Ø¨Ù…Ø¹Ø±Ù‘Ù
-  /// Ø§Ù„Ù…Ø·Ø¹Ù… Ø§Ù„Ù…Ø¯Ø®Ù„ â€” Ø­ØªÙ‰ Ù„Ùˆ ØªØ·Ø§Ø¨Ù‚ Ø§Ù„Ø§Ø³Ù… ÙˆÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø­Ø±ÙÙŠØ§Ù‹ Ø¨ÙŠÙ† Ù…Ø·Ø¹Ù…ÙŠÙ†ØŒ
-  /// Ù„Ø§ ÙŠÙ…ÙƒÙ† Ù„Ù„Ø­Ø³Ø§Ø¨ ÙÙŠ Ù…Ø·Ø¹Ù… Â«Ø£Ù„ÙÂ» Ø£Ù† ÙŠÙØªØ­ Ø¬Ù„Ø³Ø© Ù„Ù…Ø·Ø¹Ù… Â«Ø¨Ø§Ø¡Â».
+  /// **آلية العزل:** البحث يقتصر حصراً على الدليل الفرعي الخاص بمعرّف
+  /// المطعم المدخل — حتى لو تطابق الاسم وكلمة المرور حرفياً بين مطعمين،
+  /// لا يمكن للحساب في مطعم «ألف» أن يفتح جلسة لمطعم «باء».
   ///
-  /// **Ø¢Ù„ÙŠØ© Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø©:** Ø¥Ø°Ø§ ÙƒØ§Ù† Ø±Ø§Ø¨Ø· Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ù…Ø¶Ø¨ÙˆØ·Ø§Ù‹ØŒ ØªÙØ¬Ù„Ø¨ Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª
-  /// Ø§Ù„Ø³Ø­Ø§Ø¨ÙŠØ© Ø£ÙˆÙ„Ø§Ù‹ (Ø§Ù„Ø³Ø­Ø§Ø¨Ø© Ù‡ÙŠ Ø§Ù„Ù…Ø±Ø¬Ø¹) ÙˆÙŠÙØ¯Ù…Ø¬ Ø¨Ù‡Ø§ Ø§Ù„Ø¯Ù„ÙŠÙ„ Ø§Ù„Ù…Ø­Ù„ÙŠØŒ Ù…Ø¹
-  /// Ø§Ù„Ø§Ø­ØªÙØ§Ø¸ Ø¨Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ù…Ø­Ù„ÙŠØ© ØºÙŠØ± Ø§Ù„Ù…Ø±ÙÙˆØ¹Ø© Ø¨Ø¹Ø¯ (ÙˆØ¶Ø¹ Offline-First).
+  /// **آلية المزامنة:** إذا كان رابط قاعدة البيانات مضبوطاً، تُجلب الحسابات
+  /// السحابية أولاً (السحابة هي المرجع) ويُدمج بها الدليل المحلي، مع
+  /// الاحتفاظ بالحسابات المحلية غير المرفوعة بعد (وضع Offline-First).
   static Future<StaffAuthResult> authenticate({
     required String restaurantId,
     required String username,
@@ -435,34 +435,34 @@ class StaffDirectoryService {
     final String uname = StaffMember.normalizeUsername(username);
     final String pass = secret.trim();
 
-    // ØªØ­Ù‚Ù‚ ØµØ§Ø±Ù… Ù…Ù† Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù…
+    // تحقق صارم من معرّف المطعم
     if (rid.isEmpty) {
       return StaffAuthResult.failure(
-          'ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù… (Restaurant ID).');
+          'يرجى إدخال معرّف المطعم (Restaurant ID).');
     }
     
-    // ØªØ­Ù‚Ù‚ Ù…Ù† ØªÙ†Ø³ÙŠÙ‚ Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù… (ÙŠØ¬Ø¨ Ø£Ù† ÙŠØ­ØªÙˆÙŠ Ø¹Ù„Ù‰ Ø£Ø­Ø±Ù ÙˆØ£Ø±Ù‚Ø§Ù… ÙÙ‚Ø·)
+    // تحقق من تنسيق معرّف المطعم (يجب أن يحتوي على أحرف وأرقام فقط)
     if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(rid)) {
       return StaffAuthResult.failure(
-          'Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù… ÙŠØ¬Ø¨ Ø£Ù† ÙŠØ­ØªÙˆÙŠ Ø¹Ù„Ù‰ Ø£Ø­Ø±Ù ÙˆØ£Ø±Ù‚Ø§Ù… ÙÙ‚Ø· (Ø¨Ø¯ÙˆÙ† Ù…Ø³Ø§ÙØ§Øª Ø£Ùˆ Ø±Ù…ÙˆØ² Ø®Ø§ØµØ©).');
+          'معرّف المطعم يجب أن يحتوي على أحرف وأرقام فقط (بدون مسافات أو رموز خاصة).');
     }
     
-    // ØªØ­Ù‚Ù‚ Ù…Ù† Ø·ÙˆÙ„ Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù…
+    // تحقق من طول معرّف المطعم
     if (rid.length < 4) {
       return StaffAuthResult.failure(
-          'Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù… Ù‚ØµÙŠØ± Ø¬Ø¯Ø§Ù‹. ÙŠØ¬Ø¨ Ø£Ù† ÙŠÙƒÙˆÙ† 4 Ø£Ø­Ø±Ù Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„.');
+          'معرّف المطعم قصير جداً. يجب أن يكون 4 أحرف على الأقل.');
     }
 
     if (uname.isEmpty) {
-      return StaffAuthResult.failure('ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù….');
+      return StaffAuthResult.failure('يرجى إدخال اسم المستخدم.');
     }
     if (pass.isEmpty) {
-      return StaffAuthResult.failure('ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø£Ùˆ Ø§Ù„Ø±Ù…Ø² Ø§Ù„Ø³Ø±ÙŠ.');
+      return StaffAuthResult.failure('يرجى إدخال كلمة المرور أو الرمز السري.');
     }
 
     List<StaffMember> staff = await loadStaff(rid);
 
-    // Ù…Ø²Ø§Ù…Ù†Ø© Ù…Ù† Ø§Ù„Ø³Ø­Ø§Ø¨Ø© Ø¥Ù† ÙƒØ§Ù† Ø§Ù„Ø§ØªØµØ§Ù„ Ù…Ø¶Ø¨ÙˆØ·Ø§Ù‹ (Ù„Ø¶Ù…Ø§Ù† Ø§Ù„Ø­Ø¯Ø§Ø«Ø©).
+    // مزامنة من السحابة إن كان الاتصال مضبوطاً (لضمان الحداثة).
     final Map<String, Map<String, dynamic>>? remote =
         await _fetchStaffFromCloud(rid);
     if (remote != null) {
@@ -471,8 +471,8 @@ class StaffDirectoryService {
 
     if (staff.isEmpty) {
       return StaffAuthResult.failure(
-        'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø­Ø³Ø§Ø¨Ø§Øª Ù…ÙˆØ¸ÙÙŠÙ† Ù„Ù‡Ø°Ø§ Ø§Ù„Ù…Ø¹Ø±Ù‘Ù ($rid). '
-        'ØªØ£ÙƒØ¯ Ù…Ù† ØµØ­Ø© Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø·Ø¹Ù… Ø£Ùˆ Ù…Ù† Ø¥Ø¹Ø¯Ø§Ø¯ Ø±Ø§Ø¨Ø· Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª.',
+        'لا توجد حسابات موظفين لهذا المعرّف ($rid). '
+        'تأكد من صحة معرّف المطعم أو من إعداد رابط قاعدة البيانات.',
       );
     }
 
@@ -487,24 +487,24 @@ class StaffDirectoryService {
 
     if (match == null || !match.active) {
       return StaffAuthResult.failure(
-        'Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¯Ø®ÙˆÙ„ ØºÙŠØ± ØµØ­ÙŠØ­Ø© Ù„Ù‡Ø°Ø§ Ø§Ù„Ù…Ø·Ø¹Ù…. '
-        'ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙˆÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±/PIN.',
+        'بيانات الدخول غير صحيحة لهذا المطعم. '
+        'تحقق من اسم المستخدم وكلمة المرور/PIN.',
       );
     }
 
     final bool passwordOk = match.verifyPassword(pass);
     final bool pinOk = match.pin.isNotEmpty && match.pin == pass;
     if (!passwordOk && !pinOk) {
-      return StaffAuthResult.failure('ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø£Ùˆ Ø§Ù„Ø±Ù…Ø² Ø§Ù„Ø³Ø±ÙŠ ØºÙŠØ± ØµØ­ÙŠØ­.');
+      return StaffAuthResult.failure('كلمة المرور أو الرمز السري غير صحيح.');
     }
 
-    return StaffAuthResult.success(match, 'Ø£Ù‡Ù„Ø§Ù‹ Ø¨Ùƒ ÙŠØ§ ${match.name}');
+    return StaffAuthResult.success(match, 'أهلاً بك يا ${match.name}');
   }
 
-  // â”€â”€â”€ Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„Ø³Ø­Ø§Ø¨ÙŠØ© (Firebase REST â€” Offline-First) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ─── المزامنة السحابية (Firebase REST — Offline-First) ────────────────────
 
-  /// Ø¬Ù„Ø¨ Ø­Ø³Ø§Ø¨Ø§Øª Ù…Ø·Ø¹Ù… Ù…Ù† Ø§Ù„Ø³Ø­Ø§Ø¨Ø©. Ø®Ø±ÙŠØ·Ø© ÙØ§Ø±ØºØ© = Ù†Ø¬Ø§Ø­ Ø§ØªØµØ§Ù„ Ø¨Ù„Ø§ Ø­Ø³Ø§Ø¨Ø§Øª.
-  /// `null` ÙŠØ¹Ù†ÙŠ ÙØ´Ù„ Ø§Ù„Ø§ØªØµØ§Ù„ â€” Ø¹Ù†Ø¯Ù‡Ø§ ÙŠÙØ³ØªØ®Ø¯Ù… Ø§Ù„Ø¯Ù„ÙŠÙ„ Ø§Ù„Ù…Ø­Ù„ÙŠ ÙƒÙ…Ø§ Ù‡Ùˆ.
+  /// جلب حسابات مطعم من السحابة. خريطة فارغة = نجاح اتصال بلا حسابات.
+  /// `null` يعني فشل الاتصال — عندها يُستخدم الدليل المحلي كما هو.
   static Future<Map<String, Map<String, dynamic>>?> _fetchStaffFromCloud(
     String rid,
   ) async {
@@ -521,7 +521,7 @@ class StaffDirectoryService {
       if (response.statusCode != 200) return null;
       final Object? decoded = jsonDecode(response.body);
       if (decoded == null) {
-        // Ø§Ù„Ù…Ø·Ø¹Ù… ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯ Ø³Ø­Ø§Ø¨ÙŠØ§Ù‹ Ø¨Ø¹Ø¯ â€” Ù†Ø¬Ø§Ø­ Ø§ØªØµØ§Ù„ Ø¨Ø¯Ù„ÙŠÙ„ ÙØ§Ø±Øº.
+        // المطعم غير موجود سحابياً بعد — نجاح اتصال بدليل فارغ.
         return <String, Map<String, dynamic>>{};
       }
       if (decoded is! Map) return null;
@@ -534,12 +534,12 @@ class StaffDirectoryService {
         ),
       );
     } catch (e) {
-      debugPrint('[StaffDirectory] fetchStaffFromCloud Ø®Ø·Ø£: $e');
+      debugPrint('[StaffDirectory] fetchStaffFromCloud خطأ: $e');
       return null;
     }
   }
 
-  /// Ø¯Ù…Ø¬ Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ø³Ø­Ø§Ø¨ÙŠØ© Ù…Ø¹ Ø§Ù„Ø¯Ù„ÙŠÙ„ Ø§Ù„Ù…Ø­Ù„ÙŠ (Ø§Ù„Ø³Ø­Ø§Ø¨Ø© Ù‡ÙŠ Ø§Ù„Ù…Ø±Ø¬Ø¹ Ù„Ù„Ù…Ø¹ØªÙ…Ø¯).
+  /// دمج الحسابات السحابية مع الدليل المحلي (السحابة هي المرجع للمعتمد).
   static Future<List<StaffMember>> _mergeRemoteIntoLocal(
     String rid,
     Map<String, Map<String, dynamic>> remote,
@@ -567,7 +567,7 @@ class StaffDirectoryService {
         .toList();
   }
 
-  /// Ø±ÙØ¹ Ø­Ø³Ø§Ø¨ ÙˆØ§Ø­Ø¯ Ø¥Ù„Ù‰ Ø§Ù„Ø³Ø­Ø§Ø¨Ø© (ØªØ¬Ø§Ù‡Ù„ Ø£Ø®Ø·Ø§Ø¡ Ø§Ù„Ø´Ø¨ÙƒØ© Ø¨Ù‡Ø¯ÙˆØ¡ â€” Offline-First).
+  /// رفع حساب واحد إلى السحابة (تجاهل أخطاء الشبكة بهدوء — Offline-First).
   static Future<void> _pushToCloud(String rid, StaffMember member) async {
     final String url = await resolveDatabaseUrl();
     if (url.isEmpty) return;
@@ -584,16 +584,16 @@ class StaffDirectoryService {
           .timeout(const Duration(seconds: 8));
       if (response.statusCode < 200 || response.statusCode >= 300) {
         debugPrint(
-          '[StaffDirectory] pushToCloud ÙØ´Ù„ (${response.statusCode}) '
-          'Ù„Ù€ ${member.staffId}',
+          '[StaffDirectory] pushToCloud فشل (${response.statusCode}) '
+          'لـ ${member.staffId}',
         );
       }
     } catch (e) {
-      debugPrint('[StaffDirectory] pushToCloud Ø®Ø·Ø£: $e');
+      debugPrint('[StaffDirectory] pushToCloud خطأ: $e');
     }
   }
 
-  /// Ø­Ø°Ù Ø­Ø³Ø§Ø¨ Ù…Ù† Ø§Ù„Ø³Ø­Ø§Ø¨Ø© (Ù„ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„ÙŠØªÙŠÙ…Ø© Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠØ©).
+  /// حذف حساب من السحابة (لتنظيف الحسابات اليتيمة التلقائية).
   static Future<void> _deleteFromCloud(String rid, String staffId) async {
     final String url = await resolveDatabaseUrl();
     if (url.isEmpty) return;
@@ -607,7 +607,7 @@ class StaffDirectoryService {
           )
           .timeout(const Duration(seconds: 8));
     } catch (e) {
-      debugPrint('[StaffDirectory] deleteFromCloud Ø®Ø·Ø£: $e');
+      debugPrint('[StaffDirectory] deleteFromCloud خطأ: $e');
     }
   }
 }
