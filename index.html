@@ -1,46 +1,22 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="ar" dir="rtl">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="/orderly-worker-web/">
-
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="orderly_worker_web">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>orderly_worker_web</title>
-  <link rel="manifest" href="manifest.json">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>بوابة العامل | Orderly</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#17231f;background:#edf4f0}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(145deg,#e4f3ec,#f8fbf9);display:flex;justify-content:center}.app{width:min(100%,680px);padding:24px 16px}.brand{display:flex;align-items:center;gap:10px;margin:8px 0 18px;color:#13795b}.brand span{font-size:28px;font-weight:800}.panel{background:#fff;border:1px solid #dce9e2;border-radius:18px;padding:24px;box-shadow:0 12px 35px #1a5b3b12}.center{text-align:center}.icon{font-size:48px}.muted{color:#64746c}.field{display:block;width:100%;border:1px solid #c9d9d1;border-radius:11px;padding:13px 14px;margin:10px 0;background:#fbfdfc;font:inherit}.field:focus{outline:2px solid #8ad2b2;border-color:#13795b}.btn{border:0;border-radius:11px;padding:13px 18px;font:inherit;font-weight:700;cursor:pointer;background:#13795b;color:#fff}.btn.secondary{background:#e8f4ee;color:#13795b}.btn:disabled{opacity:.55}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.error{color:#bd3029;margin:12px 0;font-size:14px}.top{display:flex;align-items:center;gap:12px;margin-bottom:14px}.top strong{font-size:20px;flex:1}.order{border:1px solid #dce9e2;border-radius:14px;padding:15px;margin:11px 0;background:#fff}.order h3{margin:0 0 8px}.status{color:#13795b;font-weight:700}.photo{width:100%;max-height:210px;object-fit:cover;border-radius:10px;margin-top:10px}.hidden{display:none}.pill{background:#e8f4ee;color:#13795b;border-radius:30px;padding:6px 10px;font-size:13px}
+</style>
 </head>
-<body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
-
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
-  <script src="flutter_bootstrap.js" async></script>
-</body>
-</html>
+<body><main class="app"><header class="brand"><span>🛵</span><span>Orderly Worker</span></header><section id="login" class="panel"><div class="center"><div class="icon">🛵</div><h1>بوابة العامل</h1><p class="muted">دخول وإدارة طلباتك فقط</p></div><input id="rid" class="field" dir="ltr" placeholder="Restaurant ID"><input id="db" class="field" dir="ltr" placeholder="Firebase Database URL"><input id="user" class="field" placeholder="اسم المستخدم"><input id="secret" class="field" type="password" placeholder="كلمة المرور أو PIN"><p id="loginError" class="error"></p><button id="loginBtn" class="btn" type="button">دخول العامل</button></section><section id="home" class="hidden"><div class="top"><strong id="welcome"></strong><span id="count" class="pill"></span><button id="logout" class="btn secondary" type="button">خروج</button></div><button id="newOrder" class="btn" type="button">+ طلب جديد</button><div id="orders"></div></section><section id="form" class="panel hidden"><h2>طلب جديد</h2><input id="number" class="field" placeholder="رقم الطلب"><input id="amount" class="field" inputmode="decimal" placeholder="المبلغ"><select id="payment" class="field"><option value="cash">كاش</option><option value="masterCard">ماستر كارد</option><option value="directReceive">استلام مباشر</option></select><input id="photoInput" class="hidden" type="file" accept="image/*" capture="environment"><button id="camera" class="btn secondary" type="button">📷 التقاط صورة إثبات</button><p id="photoName" class="muted"></p><div class="row"><button id="send" class="btn" type="button">إرسال الطلب</button><button id="cancel" class="btn secondary" type="button">إلغاء</button></div><p id="formError" class="error"></p></section></main>
+<script>
+const $=id=>document.getElementById(id);let state={db:'',rid:'',staff:null,orders:[],photo:null,timer:null};
+const clean=s=>String(s||'').trim();const path=()=>state.db.replace(/\/$/,'')+'/restaurants/'+encodeURIComponent(state.rid);const json=async(url,opt)=>{const r=await fetch(url,opt);if(!r.ok)throw Error('HTTP '+r.status);return r.status===204?null:r.json()};
+function show(id){$('login').classList.toggle('hidden',id!=='login');$('home').classList.toggle('hidden',id!=='home');$('form').classList.toggle('hidden',id!=='form')}
+function hash(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''))}
+async function login(){const rid=clean($('rid').value),db=clean($('db').value),user=clean($('user').value),secret=clean($('secret').value);$('loginError').textContent='';if(!/^[a-zA-Z0-9]{4,}$/.test(rid)||!db||!user||!secret){$('loginError').textContent='أدخل Restaurant ID والرابط وبيانات العامل كاملة.';return}state={...state,db,rid};$('loginBtn').disabled=true;try{const data=await json(path()+'/staff.json');const list=data?Object.values(data):[];const normalized=user.toLowerCase();const staff=list.find(x=>String(x.username||'').trim().toLowerCase()===normalized||String(x.name||'').trim().toLowerCase()===normalized);const pass=staff&&await hash(String(staff.passwordSalt||'')+':::'+secret.trim()+':::orderly');if(!staff||staff.role!=='worker'||(pass!==staff.passwordHash&&String(staff.pin||'')!==secret)){throw Error('بيانات العامل غير صحيحة لهذا المطعم.')}state.staff=staff;sessionStorage.setItem('workerSession',JSON.stringify({db,rid,staff}));$('welcome').textContent='مرحباً '+staff.name;$('login').classList.add('hidden');show('home');await load();state.timer=setInterval(load,3000)}catch(e){$('loginError').textContent=e.message||'تعذر الاتصال بـ Firebase.'}finally{$('loginBtn').disabled=false}}
+async function load(){try{const snap=await json(path()+'/snapshot.json');const drivers=Array.isArray(snap&&snap.drivers)?snap.drivers:[];const d=drivers.find(x=>String(x.pin)===String(state.staff.driverPin));state.orders=d&&Array.isArray(d.orders)?d.orders:[];render()}catch(e){$('orders').innerHTML='<p class="error">تعذر تحميل الطلبات.</p>'}}
+function render(){ $('count').textContent=state.orders.length+' طلب';$('orders').innerHTML=state.orders.length?state.orders.map(o=>'<article class="order"><h3>طلب '+esc(o.orderNumber||'بدون رقم')+'</h3><div>'+Number(o.amount||0).toLocaleString()+' د.ع</div><p class="status">'+esc(o.status||'preparing')+'</p>'+(o.proofImageData?'<img class="photo" src="'+o.proofImageData+'">':'')+'</article>').join(''):'<div class="panel center"><p>لا توجد طلبات حالياً</p></div>'}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('loginBtn').onclick=login;$('newOrder').onclick=()=>show('form');$('cancel').onclick=()=>show('home');$('camera').onclick=()=>$('photoInput').click();$('photoInput').onchange=async e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{state.photo=r.result;$('photoName').textContent='تم إرفاق صورة الإثبات'};r.readAsDataURL(f)};$('logout').onclick=()=>{clearInterval(state.timer);sessionStorage.clear();location.reload()};$('send').onclick=async()=>{const n=clean($('number').value),a=Number(clean($('amount').value).replace(',',''));if(!n||!Number.isFinite(a)){$('formError').textContent='أدخل رقم الطلب والمبلغ.';return}const snap=await json(path()+'/snapshot.json');const drivers=Array.isArray(snap&&snap.drivers)?snap.drivers:[],i=drivers.findIndex(x=>String(x.pin)===String(state.staff.driverPin));if(i<0){$('formError').textContent='لم يتم العثور على العامل.';return}drivers[i].orders=Array.isArray(drivers[i].orders)?drivers[i].orders:[];drivers[i].orders.push({id:'ord_'+Date.now()+'_'+n,orderNumber:n,amount:a,paymentType:$('payment').value,addedAt:new Date().toISOString(),status:'preparing',driverPin:state.staff.driverPin,driverName:state.staff.name,expectedDurationMinutes:25,...(state.photo?{proofImageData:state.photo}:{})});snap.restaurantId=state.rid;snap.updatedAt=new Date().toISOString();snap.drivers=drivers;await json(path()+'/snapshot.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(snap)});await json(path()+'/heartbeat.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:String(Date.now())});$('number').value='';$('amount').value='';state.photo=null;$('photoName').textContent='';show('home');await load()};
+</script></body></html>
