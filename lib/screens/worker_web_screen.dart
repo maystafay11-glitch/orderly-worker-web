@@ -164,74 +164,84 @@ class _WorkerWebScreenState extends State<WorkerWebScreen> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  GestureDetector(
-                    onTap: () => setState(() => _showLogin = true),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 180),
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(28),
-                        gradient: const LinearGradient(
-                          colors: <Color>[
-                            Color(0xFF6F5DEB),
-                            Color(0xFF4B7BFF),
-                          ],
-                        ),
-                        boxShadow: const <BoxShadow>[
-                          BoxShadow(
-                            color: Color(0x664b7bff),
-                            blurRadius: 22,
-                            offset: Offset(0, 14),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            width: 52,
-                            height: 52,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.18),
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                            child: const Icon(
-                              Icons.arrow_forward_rounded,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
-                              child: const Text(
-                                'تسجيل دخول السائقين أو العمال',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 220),
+                    child: _showLogin
+                        ? const SizedBox.shrink()
+                        : Material(
+                            key: const ValueKey<String>('worker_cta'),
+                            color: Colors.transparent,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(28),
+                              onTap: () => setState(() => _showLogin = true),
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 180),
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(28),
+                                  gradient: const LinearGradient(
+                                    colors: <Color>[
+                                      Color(0xFF6F5DEB),
+                                      Color(0xFF4B7BFF),
+                                    ],
+                                  ),
+                                  boxShadow: const <BoxShadow>[
+                                    BoxShadow(
+                                      color: Color(0x664b7bff),
+                                      blurRadius: 22,
+                                      offset: Offset(0, 14),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Container(
+                                      width: 52,
+                                      height: 52,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withValues(alpha: 0.18),
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
+                                      child: const Icon(
+                                        Icons.arrow_forward_rounded,
+                                        color: Colors.white,
+                                        size: 24,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                                        child: const Text(
+                                          'تسجيل دخول السائقين أو العمال',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 52,
+                                      height: 52,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withValues(alpha: 0.18),
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
+                                      child: const Icon(
+                                        Icons.directions_car_filled_rounded,
+                                        color: Colors.white,
+                                        size: 24,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                          Container(
-                            width: 52,
-                            height: 52,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.18),
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                            child: const Icon(
-                              Icons.directions_car_filled_rounded,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
                   if (_showLogin) ...<Widget>[
                     const SizedBox(height: 28),
